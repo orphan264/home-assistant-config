@@ -1,0 +1,91 @@
+- platform: template
+  sensors:
+
+#    gonna_rain:
+#      friendly_name: "Is it Going to Rain?"
+#      value_template: >-
+#        {{ states.sensor.dark_sky_nearest_storm_distance.state|float < 9 and states.sensor.dark_sky_precip_probability.state|float > 80 }}
+
+    announce:
+      friendly_name: "Announcements"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_announce','on') and is_state('input_boolean.input_announce','on') and is_state('group.amy_or_david','home') }}
+      icon_template: >-
+        {% if is_state('binary_sensor.tod_announce','on') and is_state('input_boolean.input_announce','on') and is_state('group.amy_or_david','home') %}
+          mdi:bullhorn
+        {% else %}
+          mdi:bullhorn-outline
+        {% endif %}
+
+    chimes:
+      friendly_name: "Westminster Chimes"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_chimes','on') and is_state('input_boolean.input_chimes','on') and is_state('group.amy_or_david','home') }}
+      icon_template: >-
+        {% if is_state('binary_sensor.tod_chimes','on') and is_state('input_boolean.input_chimes','on') and is_state('group.amy_or_david','home') %}
+          mdi:bell-ring
+        {% else %}
+          mdi:bell-ring-outline
+        {% endif %}
+
+    alarm_workday_david:
+      friendly_name: "Workday Alarm - David"
+      value_template: >-
+        {{ is_state('binary_sensor.Workday_David','on') and is_state('input_boolean.input_alarm_workday_david','on') and is_state('person.david','home') }}
+      icon_template: >-
+        {% if is_state('binary_sensor.Workday_David','on') and is_state('input_boolean.input_alarm_workday_david','on') and is_state('person.david','home') %}
+          mdi:bell-ring
+        {% else %}
+          mdi:bell-ring-outline
+        {% endif %}
+
+    guest_mode:
+      friendly_name: "Guest Mode"
+      value_template: >-
+        {{ is_state('input_boolean.input_guest','on') }}
+      icon_template: >-
+        {% if is_state('input_boolean.input_guest','on') %}
+          mdi:account-supervisor
+        {% else %}
+          mdi:account-supervisor-outline
+        {% endif %}        
+
+    house_secure:
+      friendly_name: "House is secure"
+      value_template: >-
+        {{ is_state('binary_sensor.shop_door','off') }}
+      icon_template: >-
+          mdi:lock-check
+
+    house_sleeping:
+      friendly_name: "House is sleeping"
+      value_template: >-
+        {{ is_state('binary_sensor.shop_door','off') }}
+      icon_template: >-
+          mdi:sleep
+
+    default_studio_parlour_floor_lamp:
+      friendly_name: "Default - Studio Parlour Floor Lamp"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_overnight','on') }}
+   
+    default_christmas_tree:
+      friendly_name: "Default - Christmas Tree"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          on
+        {% elif is_state('binary_sensor.tod_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+#    default_exterior_outlet_1:
+#      friendly_name: "Default - Exterior Outlet 1"
+#      value_template: >-
+#        {{ is_state('binary_sensor.tod_evening','on') }}
+
+    default_porch:
+      friendly_name: "Default - Porch"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_evening','on') }}

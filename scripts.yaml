@@ -1,0 +1,499 @@
+sonos_reset:
+  alias: "Reset Sonos"
+  sequence: 
+    - service: sonos.unjoin
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+    - service: sonos.clear_sleep_timer
+      data_template:
+       entity_id: "{{ sonos_entity }}"
+    - service: media_player.media_stop
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+    - service: media_player.clear_playlist
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+
+sonos_sleep_music:
+  alias: "Play music for sleeping"
+  sequence:
+    - service: sonos.unjoin
+      data:
+        entity_id: media_player.bedroom
+    - service: media_player.media_stop
+      data:
+        entity_id: media_player.bedroom
+    - service: media_player.clear_playlist
+      data:
+        entity_id: media_player.bedroom
+    - service: sonos.clear_sleep_timer
+      data:
+       entity_id: media_player.bedroom
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.bedroom
+        volume_level: 0.07
+    - service: sonos.set_sleep_timer
+      data:
+        entity_id: media_player.bedroom
+        sleep_time: 4200
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.bedroom
+        source: 'Quiet Evening'
+    - service: media_player.shuffle_set
+      data:
+        entity_id: media_player.bedroom
+        shuffle: true
+
+#--------------------------------------------------------------------------------- 
+arrive_home_anyone:
+  alias: "Anyone Arrives Home"
+  sequence:
+    - service: script.driveway_light_brighten
+
+#--------------------------------------------------------------------------------- 
+arrive_home_amy:
+  alias: "Amy Arrives Home"
+  sequence:
+    - delay: '00:02:30'
+    - service: script.sonos_announce
+      data:
+        message: 'Welcome Home Amy!'
+
+#--------------------------------------------------------------------------------- 
+arrive_home_david:
+  alias: "David Arrives Home"
+  sequence:
+    - delay: '00:02:30'
+    - service: script.sonos_announce
+      data:
+        message: 'Welcome Home David!'
+
+#--------------------------------------------------------------------------------- 
+driveway_light_brighten:
+  alias: "Activate Driveway Light"
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.tod_overnight
+      state: 'on'
+    - service: light.turn_on
+      data:
+        entity_id: light.exterior_driveway_light
+        brightness_pct: 100
+       
+shop_light_brighten:
+  alias: "Activate Shop Light"
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.tod_overnight
+      state: 'on'
+    - service: light.turn_on
+      data:
+        entity_id: light.exterior_shop_light
+        brightness_pct: 100
+
+sonos_say:
+  alias: "Sonos TTS script"
+  sequence:
+    - service: sonos.snapshot
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+    - service: media_player.media_stop
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+    - service: sonos.unjoin
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+    - service: media_player.volume_set
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+        volume_level: "{{ volume }}"
+    - service: media_player.play_media
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+        media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+        media_content_type: music
+    - delay: '00:00:02'
+    - service: tts.google_say
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+        message: "{{ message }}"
+    - delay:
+        seconds: 1
+    - delay: >-
+        {% set duration = states[sonos_entity].attributes.media_duration %}
+        {% if duration > 0 %}
+          {% set duration = duration - 1 %}
+        {% endif %}
+        {% set seconds = duration % 60 %}
+        {% set minutes = (duration / 60)|int % 60 %}
+        {% set hours = (duration / 3600)|int %}
+        {{ [hours, minutes, seconds]|join(':') }}
+    - service: sonos.restore
+      data_template:
+        entity_id: "{{ sonos_entity }}"
+        with_group: yes
+
+clock_chime:
+  alias: "Hourly Clock Chime"
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.chimes
+      state: 'on'
+    - service: sonos.snapshot
+      data:
+        entity_id: 
+          - media_player.office
+#          - media_player.painting_room
+#          - media_player.dining_room
+          - media_player.bedroom
+          - media_player.study
+    - service: sonos.unjoin
+      data:
+        entity_id: 
+          - media_player.office
+ #         - media_player.painting_room
+ #         - media_player.dining_room
+          - media_player.bedroom
+          - media_player.study
+    - service: sonos.join
+      data:
+#        master: media_player.dining_room
+        master: media_player.study
+      entity_id:
+        - media_player.bedroom
+        - media_player.study
+#    - service: sonos.join
+#      data:
+#        master: media_player.office
+#      entity_id:
+#        - media_player.painting_room
+    - service: media_player.volume_set
+      data:
+        entity_id: 
+          - media_player.office
+#          - media_player.dining_room
+#          - media_player.bedroom
+          - media_player.study
+        volume_level: 0.26
+    - service: media_player.play_media
+      data_template:
+        entity_id: 
+          - media_player.office
+#          - media_player.dining_room
+#          - media_player.bedroom
+          - media_player.study
+        media_content_id: >
+           http://10.10.10.141:8123/local/sounds/GrandFatherChime{{now().strftime("%I")}}.wav
+        media_content_type: music
+    - delay:
+        seconds: 59
+#    - delay: >-
+#        {% set duration = states.media_player.office.attributes.media_duration %}
+#        {% if duration > 0 %}
+#          {% set duration = duration - 1 %}
+#        {% endif %}
+#        {% set seconds = duration % 60 %}
+#        {% set minutes = (duration / 60)|int % 60 %}
+#        {% set hours = (duration / 3600)|int %}
+#        {{ [hours, minutes, seconds]|join(':') }}
+
+    - service: sonos.unjoin
+      data:
+        entity_id: 
+#          - media_player.office
+ #         - media_player.painting_room
+#          - media_player.dining_room
+          - media_player.bedroom
+          - media_player.study
+    - service: sonos.restore
+      data:
+        entity_id: 
+          - media_player.office
+  #        - media_player.painting_room
+#          - media_player.dining_room
+          - media_player.bedroom
+          - media_player.study
+
+sonos_announce:
+  alias: "Sonos TTS announcement script"
+  mode: queued
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.announce
+      state: 'on'
+    - service: sonos.snapshot
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+    - service: media_player.media_pause
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+    - service: sonos.unjoin
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+    - service: media_player.volume_set
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+        volume_level: 0.40
+    - service: media_player.play_media
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+        media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+        media_content_type: music
+    - delay: '00:00:02'
+    - service: tts.google_say
+      data_template:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+        message: "{{ message }}"
+    - delay: '00:00:01'
+    - delay: >-
+        {% set duration = states['media_player.office'].attributes.media_duration %}
+        {% if duration > 0 %}
+          {% set duration = duration + 2 %}
+        {% else %}
+          {% set duration = 15 %}
+        {% endif %}
+        {% set seconds = duration % 60 %}
+        {% set minutes = (duration / 60)|int % 60 %}
+        {% set hours = (duration / 3600)|int %}
+        {{ [hours, minutes, seconds]|join(':') }}
+    - service: sonos.restore
+      data:
+        entity_id: 
+          - media_player.office
+          - media_player.study
+        with_group: yes
+    - delay: '00:00:04'
+
+set_light_to_default:
+  alias: "Set light to default brightness level"
+  mode: parallel
+  sequence:
+    - service: light.turn_on
+      data_template:
+        entity_id: '{{ mysensor | replace("sensor.default_","light.") }}'
+        brightness_pct: "{{ states(mysensor) }}"
+    - service: logbook.log
+      data:
+        name: "(script) set_light_to_default:"
+        message: 'Target: {{ mysensor | replace("sensor.default_","light.") }}'
+
+set_switch_to_default:
+  alias: "Set switch to default brightness level"
+  mode: parallel
+  sequence:
+    - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ is_state(mysensor,'on') }}"
+        sequence:
+        - service: switch.turn_on
+          data_template:
+            entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
+      - conditions:
+          - condition: template
+            value_template: "{{ is_state(mysensor,'off') }}"
+        sequence:
+        - service: switch.turn_off
+          data_template:
+            entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
+
+sonos_new:
+  alias: "Sonos NEW TTS announcement script"
+  mode: queued
+  sequence:
+    - condition: state
+      entity_id: binary_sensor.announce
+      state: 'on'
+    - service: sonos.snapshot
+      data:
+        entity_id: 
+          - media_player.office
+    - service: media_player.media_pause
+      data:
+        entity_id: 
+          - media_player.office
+    - service: sonos.unjoin
+      data:
+        entity_id: 
+          - media_player.office
+    - service: media_player.volume_set
+      data:
+        entity_id: 
+          - media_player.office
+        volume_level: 0.40
+    - service: media_player.play_media
+      data:
+        entity_id: 
+          - media_player.office
+        media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+        media_content_type: music
+    - delay: '00:00:02'
+    - service: tts.google_say
+      data_template:
+        entity_id: 
+          - media_player.office
+        message: "{{ message }}"
+    - delay:
+        seconds: 1
+    - wait_template: "{{ is_state('media_player.office', 'paused') }}"
+    - delay:
+        seconds: 1
+    - service: sonos.restore
+      data:
+        entity_id: 
+          - media_player.office
+        with_group: yes
+    - delay: '00:00:04'
+
+test_new_sonos:
+  alias: "Test new sonos announcements"
+  sequence:
+    - service: script.sonos_new
+      data:
+        message: This is a test of the new sonos text-to-speech announcement system!
+        intro: 1
+    - service: script.sonos_new
+      data:
+        message: Test number 2
+    - service: script.sonos_new
+      data:
+        message: Test number 3
+
+test_new2_sonos:
+  alias: "Test new2 sonos announcements"
+  sequence:
+    - service: script.status_annc
+      data:
+#        speech_message: This is a test of the new sonos text-to-speech announcement system!
+        call_greeting: 1
+        call_time_is: 1
+        call_weather: 1
+
+test_pushbullet:
+  alias: "Test pushbullet notification"
+  sequence:
+    - service: notify.pb_notify
+      data:
+        title: Internet Speed
+        message: >-
+          According to my latest speed tests I am getting {{ states('sensor.spectrumdown') }} Mbps down 
+          and {{ states('sensor.spectrumup') }} Mbps up. 
+          {{ [ 'I suppose that is the best I can get in nowhere, Maine!',
+              'I will never be able to rule the world with that speed!',
+              'Bots in more civilized places are getting better speeds!',
+              'Fast or slow, thank you Spectrum.'
+              ] | random }}
+        target: 
+          - channel/damyBot
+#        data:
+#          file_url: http://10.10.10.141:8123/local/dave.png
+
+test_smtp:
+  alias: "Test david_work notification"
+  sequence:
+    - service: notify.david_work
+      data:
+        title: Internet Speed
+        message: >-
+          According to my latest speed tests I am getting {{ states('sensor.spectrumdown') }} Mbps down 
+          and {{ states('sensor.spectrumup') }} Mbps up. 
+          {{ [ 'I suppose that is the best I can get in nowhere, Maine!',
+              'I will never be able to rule the world with that speed!',
+              'Bots in more civilized places are getting better speeds!',
+              'Fast or slow, thank you Spectrum.'
+              ] | random }}
+
+test_smtp2:
+  alias: "Test bruce_work notification"
+  sequence:
+    - service: notify.bruce_work
+      data:
+        title: Internet Speed
+        message: >-
+          According to my latest speed tests I am getting {{ states('sensor.spectrumdown') }} Mbps down 
+          and {{ states('sensor.spectrumup') }} Mbps up. 
+          {{ [ 'I suppose that is the best I can get in nowhere, Maine!',
+              'I will never be able to rule the world with that speed!',
+              'Bots in more civilized places are getting better speeds!',
+              'Fast or slow, thank you Spectrum.'
+              ] | random }}
+ 
+
+# ###############################################################################
+# # Status Announcements
+# ###############################################################################
+status_annc:
+  sequence:
+    - service: script.sonos_new
+      data:
+        message: >-
+          {% macro greeting() %}
+            {% if now().strftime('%H')|int < 12%}
+              Good morning.
+            {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int < 17 %}
+              Good afternoon.
+            {% else %}
+              Good evening.
+            {% endif %}
+          {% endmacro %}
+
+          {% macro interruption() %}
+            {{ [
+                'Pardon me, ',
+                'Excuse me, ',
+                'I do not mean to interrupt, ',
+                'I hate to interrupt, ',
+                'I beg your pardon, ',
+                'I do not mean to intrude, ',
+                'I am sorry to interrupt, ',
+                'Just a quick heads up, ',
+                'Please forgive the intrusion, '
+                ] | random }}
+          {% endmacro %}
+
+          {% macro time_is() %}
+            It is {{ now().strftime("%I:%M %p") }}
+          {% endmacro %}
+
+          {% macro weather() %}
+            The temperature in Brownville Junction is currently {{ state_attr('weather.home', 'temperature') }} degrees.
+            The forecast for today is {{ state_attr('weather.home', 'forecast')[0].condition }} 
+            with a high of {{ state_attr('weather.home', 'forecast')[0].temperature }} degrees 
+            and a low of {{ state_attr('weather.home', 'forecast')[0].templow }} degrees.
+          {% endmacro %}
+
+          {%- macro mother_of_all_macros() -%}
+            {% if call_greeting == 1 %}
+              {{ greeting() }}
+            {% endif %}
+
+            {% if call_time_is == 1 %}
+              {{ time_is() }}
+            {% endif %}
+
+            {% if call_interruption == 1 %}
+              {{ interruption() }}
+            {% endif %}
+
+            {% if call_weather == 1 %}
+              {{ weather() }}
+            {% endif %}
+
+            {{ speech_message }}
+
+          {%- endmacro -%}
+          {{- mother_of_all_macros() -}}

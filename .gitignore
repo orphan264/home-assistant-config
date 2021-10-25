@@ -1,0 +1,36 @@
+# An * ensures that everything will be ignored.
+*
+# You can whitelist files/folders with !, these will not be ignored.
+!*.yaml
+!.gitignore
+!*.md
+!binary_sensors
+!sensors
+!automations
+
+# Ignore folders.
+.storage
+.cloud
+.google.token
+.vscode
+blueprints
+custom_components
+deps
+esphome
+glances
+tts
+www
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+*.conf
+*.log
+ip_bans.yaml
+ideas.txt
+secrets.yaml
+customize.yaml
+known_devices.yaml
+zones.yaml
+autostore.yaml
+google_calendars.yaml
+
+

@@ -1,0 +1,13 @@
+- id: 'HA Startup'
+  alias: 'HA Startup'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    - service: notify.pb_notify
+      data:
+        title: "[damyBot] HomeAssistant has Started"
+        message: >-
+          Home Assistant version {{ states('sensor.installed') }} has started and damyBot is ready!
+        target: 
+          - channel/damyBot

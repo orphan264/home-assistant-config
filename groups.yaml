@@ -1,0 +1,5 @@
+  Amy_or_David:
+    name: Somebody
+    entities:
+    - person.David
+    - person.Amy

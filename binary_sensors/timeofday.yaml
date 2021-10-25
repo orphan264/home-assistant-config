@@ -1,0 +1,43 @@
+- platform: tod
+  name: "TOD Overnight"
+  after: sunset
+  after_offset:  "-00:30:00"
+  before: sunrise
+  before_offset: "+00:20:00"
+
+- platform: tod
+  name: "TOD Evening"
+  after: sunset
+  after_offset:  "-00:30:00"
+  before: "23:00"
+
+- platform: tod
+  name: "TOD Morning"
+  after: "06:00"
+  before: "07:00"
+
+- platform: tod
+  name: "TOD Afternoon"
+#  after: "10:40"
+  after: "15:00"
+  before: sunset
+
+- platform: tod
+  name: "Portside Internet Priority"
+  after: '07:00'
+  before: '20:00'
+
+- platform: tod
+  name: "TOD Announce"
+  after: '07:01'
+  before: '21:00'
+
+- platform: tod
+  name: "TOD Chimes"
+  after: '07:55'
+  before: '20:05'
+
+- platform: tod
+  name: "TOD Holiday Lights"
+  after: '15:00'
+  before: '21:45'

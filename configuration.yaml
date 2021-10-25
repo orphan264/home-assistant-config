@@ -1,0 +1,185 @@
+homeassistant:
+  name: Home
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
+  unit_system: Imperial
+  time_zone: America/New_York 
+  allowlist_external_dirs:
+    - /config
+    - /config/www/sounds
+  customize: !include customize.yaml
+  auth_providers:
+    - type: trusted_networks
+      trusted_networks: !secret ip_trusted_network
+
+frontend:
+config:
+updater:
+discovery:
+history:
+#energy:
+
+logbook:
+  include:
+    entities:
+      - binary_sensor.default_christmas_tree
+     
+map:
+sun:
+system_health:
+mobile_app:
+
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+device_tracker:
+  - platform: iphonedetect
+    consider_home: 60
+    scan_interval: 12
+    new_device_defaults:
+      track_new_devices: true
+    hosts:
+      hostname1: !secret ip_iPhone
+
+person:
+  - name: Amy
+    id: alk123
+    device_trackers:
+      - device_tracker.life360_amy
+      - device_tracker.hostname1
+  - name: David
+    id: djk123
+    user_id: !secret home_assistant_user_account_id_david
+    device_trackers:
+      - device_tracker.life360_david
+  - name: Ken
+    id: kh123
+    device_trackers:
+      - device_tracker.life360_ken_howard
+
+wemo:
+  static:
+    - !secret ip_wemo
+
+notify:
+  - name: pb_notify
+    platform: pushbullet
+    api_key: !secret pushbullet_api_key
+
+  - name: "david_work"
+    platform: smtp
+    server: !secret ip_modi
+    port: 25
+    encryption: none
+    sender: !secret email_smtp_sender
+    sender_name: !secret email_smtp_sender_name
+    recipient: !secret email_david_work
+
+  - name: "bruce_work"
+    platform: smtp
+    server: !secret ip_modi
+    port: 25
+    encryption: none
+    sender: !secret email_smtp_sender
+    sender_name: !secret email_smtp_sender_name
+    recipient: !secret email_bruce_work
+  
+life360:
+  accounts:
+    - username: !secret life360_username
+      password: !secret life360_password
+
+lutron_caseta:
+  host: !secret ip_lutron_hub
+  keyfile: /ssl/lutron/caseta.key
+  certfile: /ssl/lutron/caseta.crt
+  ca_certs: /ssl/lutron/caseta-bridge.crt
+
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
+proximity:
+  david_home:
+    zone: home
+    devices:
+      - device_tracker.life360_david
+    tolerance: 50
+    unit_of_measurement: mi
+  amy_home:
+    zone: home
+    devices:
+      - device_tracker.life360_amy
+    tolerance: 50
+    unit_of_measurement: mi
+  ken_home:
+    zone: howard
+    devices:
+      - device_tracker.life360_ken_howard
+    tolerance: 50
+    unit_of_measurement: mi
+  
+input_boolean:
+  input_announce:
+    name: "Announce Input"
+
+  input_chimes:
+    name: "Chimes Input"
+    
+  input_guest:
+    name: "Guest Mode"
+
+  input_alarm_workday_david:
+    name: "Workday Alarm (David) Input"
+
+input_datetime:
+  alarm_time_david:
+    name: "David's Alarm Time"
+    has_date: false
+    has_time: true
+
+  last_rain:
+    name: Time of last reported rainfall
+    has_date: true
+    has_time: true
+
+sonoff:
+  username: !secret ewe_username
+  password: !secret ewe_password
+  mode: local
+  reload: always  # update device list every time HA starts
+  force_update: [power]
+  scan_interval: '00:01:00'  # (optional) default 5 minutes
+  sensors: [power, current, voltage]
+
+utility_meter:
+  daily_steps:
+    source: sensor.vs988_steps_sensor
+    cycle: daily
+
+input_select:
+  state_washingmachine:
+    name: Washing Machine state
+    options:
+      - Ready
+      - Washing
+    icon: mdi:tumble-dryer
+  
+### Includes ###
+#alert: !include_dir_merge_named alerts/
+automation manual: !include_dir_merge_list automations/
+automation ui: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include_dir_merge_list sensors
+binary_sensor: !include_dir_merge_list binary_sensors
+#light: !include lights.yaml
+#switch: !include switches.yaml
+#scene: !include scenes.yaml
+#input_select: !include input_select.yaml
+#input_boolean: !include input_boolean.yaml
+#input_datetime: !include input_datetime.yaml
+group: !include groups.yaml
+zone: !include zones.yaml
+

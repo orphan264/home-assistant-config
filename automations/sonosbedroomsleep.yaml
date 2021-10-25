@@ -1,0 +1,25 @@
+- id: 55677e119b0d41c5971442d0e0f1d89b
+  alias: Sonos Bedroom Sleep
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: state
+    entity_id: sensor.battery_charging_david
+    to: 'True'
+  condition:
+  - condition: time
+    after: '21:00:00'
+    before: '23:55:00'
+  - condition: state
+    entity_id: person.David
+    state: home
+  action:
+  - service: script.sonos_say
+    data:
+      sonos_entity: media_player.bedroom
+      volume: 0.11
+      message: Sleep mode activated. Good Night!
+      delay: 00:00:04
+  - delay: 00:00:05
+  - service: script.sonos_sleep_music
+  initial_state: true
+  mode: single

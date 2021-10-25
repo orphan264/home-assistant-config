@@ -1,0 +1,25 @@
+- platform: workday
+  name: Workday_David
+  country: US
+  add_holidays: 
+    - '2021-11-26'
+    - '2021-12-24'
+    - '2021-12-31'
+
+- platform: workday
+  name: Workday_Amy
+  country: US
+  workdays: [mon, tue, wed, thu, fri]
+  excludes: [sat, sun, holiday]  
+  add_holidays: 
+    - '2021-01-18'
+    - '2021-02-15'
+    - '2021-02-16'
+    - '2021-02-17'
+    - '2021-02-18'
+    - '2021-02-19'
+    - '2021-04-19'
+    - '2021-04-20'
+    - '2021-04-21'
+    - '2021-04-22'
+    - '2021-04-23'

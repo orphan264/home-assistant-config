@@ -1,0 +1,14 @@
+- id: 8e0806b488e04a41af5cdf6cbd37490a
+  alias: Grandfather Clock
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: time_pattern
+    minutes: '0'
+    seconds: '10'
+  condition:
+  - condition: time
+    after: 07:30:00
+    before: '19:15:00'
+  action:
+  - service: script.clock_chime
+  mode: single
