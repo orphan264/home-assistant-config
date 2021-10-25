@@ -72,7 +72,7 @@
     default_christmas_tree:
       friendly_name: "Default - Christmas Tree"
       value_template: >-
-        {% if is_state('binary_sensor.tod_evening','on') %}
+        {% if is_state('binary_sensor.tod_holiday_lights','on') and is_state('group.amy_or_david','home') %}
           on
         {% elif is_state('binary_sensor.tod_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
           on

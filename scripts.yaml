@@ -51,6 +51,13 @@ arrive_home_anyone:
   alias: "Anyone Arrives Home"
   sequence:
     - service: script.driveway_light_brighten
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_bedroom_table_lamp
+    - service: script.set_switch_to_default
+      data:
+        mysensor: sensor.default_christmas_tree
+
 
 #--------------------------------------------------------------------------------- 
 arrive_home_amy:
