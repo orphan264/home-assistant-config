@@ -174,10 +174,6 @@
   - service: script.set_light_to_default
     data:
       mysensor: '{{trigger.to_state.entity_id }}'
-  #- service: logbook.log
-  #  data:
-  #    name: '(automation) process_default_changes_for_lights: '
-  #    message: 'Trigger: {{trigger.to_state.entity_id }}'
   mode: parallel
   max: 10
 - id: Process Default Changes for Switches
@@ -195,50 +191,8 @@
   - service: script.set_switch_to_default
     data:
       mysensor: '{{trigger.to_state.entity_id }}'
-#  - service: logbook.log
-#    data:
-#      name: '(automation) process_default_changes_for_switches: '
-#      message: 'Trigger: {{trigger.to_state.entity_id }}'
   mode: parallel
   max: 10
-- id: Monitor Exterior Driveway Light
-  alias: Monitor - Exterior Driveway Light
-  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-  trigger:
-  - entity_id: sensor.brightness_exterior_driveway_light
-    platform: state
-  - entity_id: sensor.default_exterior_driveway_light
-    platform: state
-  condition:
-  - condition: template
-    value_template: '{{ states.sensor.default_exterior_driveway_light.state != states.sensor.brightness_exterior_driveway_light.state
-      }}'
-  action:
-  - delay: 00:20:00
-  - service: script.set_light_to_default
-    data:
-      mysensor: sensor.default_exterior_driveway_light
-  initial_state: true
-  mode: restart
-- id: Monitor Exterior Shop Light
-  alias: Monitor - Exterior Shop Light
-  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-  trigger:
-  - entity_id: sensor.brightness_exterior_shop_light
-    platform: state
-  - entity_id: sensor.default_exterior_shop_light
-    platform: state
-  condition:
-  - condition: template
-    value_template: '{{ states.sensor.default_exterior_shop_light.state != states.sensor.brightness_exterior_shop_light.state
-      }}'
-  action:
-  - delay: 00:15:00
-  - service: script.set_light_to_default
-    data:
-      mysensor: sensor.default_exterior_shop_light
-  initial_state: true
-  mode: restart
 - id: '1609085637484'
   alias: Someone has come home
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -508,3 +462,49 @@
       name: Laundry Light Timer
       message: The laundry light has been turned off by the timer.
   mode: restart
+- id: '1635272907255'
+  alias: Monitor - Specified Exterior Lights
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.default_exterior_driveway_light'') != states(''sensor.brightness_exterior_driveway_light'')
+      }}'
+    id: Driveway
+  - platform: template
+    value_template: '{{ states(''sensor.default_exterior_shop_light'') != states(''sensor.brightness_exterior_shop_light'')
+      }}'
+    id: Shop
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Driveway
+      sequence:
+      - service: script.set_light_to_default
+        data:
+          mysensor: sensor.default_exterior_driveway_light
+      - service: logbook.log
+        data:
+          name: Exterior Light Monitor
+          message: Exterior driveway light returned to default brightness
+          domain: logbook
+    - conditions:
+      - condition: trigger
+        id: Shop
+      sequence:
+      - service: script.set_light_to_default
+        data:
+          mysensor: sensor.default_exterior_shop_light
+      - service: logbook.log
+        data:
+          name: Exterior Light Monitor
+          domain: logbook
+          message: Exterior Shop light returned to default brightness
+  mode: parallel
+  max: 5
