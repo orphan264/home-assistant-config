@@ -23,7 +23,7 @@ history:
 logbook:
   include:
     entities:
-      - binary_sensor.default_christmas_tree
+      - logbook.log
      
 map:
 sun:

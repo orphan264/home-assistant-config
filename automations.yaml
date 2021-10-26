@@ -48,27 +48,6 @@
         up too late!", "That''s OK, You relax, I will take care of the lights." ]
         |random }}'
   mode: single
-- id: 4fbd1e09d72d4f74a24747081d4932c3
-  alias: Log person changes
-  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-  trigger:
-  - platform: state
-    entity_id:
-    - person.amy
-    - person.david
-    - person.ken
-  condition:
-  - condition: template
-    value_template: "{{ trigger.from_state is not none and\n   trigger.to_state is\
-      \ not none and\n   trigger.from_state.state != trigger.to_state.state  }}\n"
-  action:
-  - service: logbook.log
-    data_template:
-      name: 'Person: '
-      message: '{{trigger.to_state.name}}''s location has changed from {{trigger.from_state.state}}
-        to {{trigger.to_state.state}} by {{ trigger.to_state.attributes.source }}'
-  initial_state: 'off'
-  mode: single
 - id: storelastrain
   alias: Save the date and time of last rain
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -195,10 +174,10 @@
   - service: script.set_light_to_default
     data:
       mysensor: '{{trigger.to_state.entity_id }}'
-  - service: logbook.log
-    data:
-      name: '(automation) process_default_changes_for_lights: '
-      message: 'Trigger: {{trigger.to_state.entity_id }}'
+  #- service: logbook.log
+  #  data:
+  #    name: '(automation) process_default_changes_for_lights: '
+  #    message: 'Trigger: {{trigger.to_state.entity_id }}'
   mode: parallel
   max: 10
 - id: Process Default Changes for Switches
@@ -216,10 +195,10 @@
   - service: script.set_switch_to_default
     data:
       mysensor: '{{trigger.to_state.entity_id }}'
-  - service: logbook.log
-    data:
-      name: '(automation) process_default_changes_for_switches: '
-      message: 'Trigger: {{trigger.to_state.entity_id }}'
+#  - service: logbook.log
+#    data:
+#      name: '(automation) process_default_changes_for_switches: '
+#      message: 'Trigger: {{trigger.to_state.entity_id }}'
   mode: parallel
   max: 10
 - id: Monitor Exterior Driveway Light
@@ -352,20 +331,6 @@
     data:
       entity_id: light.exterior_shop_light
       brightness_pct: 100
-  mode: single
-- id: '1609101715317'
-  alias: Monitor - Laundry Light
-  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-  trigger:
-  - platform: state
-    entity_id: switch.laundry_light
-    to: 'on'
-  condition: []
-  action:
-  - delay: 00:20:00
-  - service: switch.turn_off
-    data:
-      entity_id: switch.laundry_light
   mode: single
 - id: media_plex_stopped_lights_on
   alias: Plex Stopped - Lights On
@@ -519,3 +484,27 @@
           is_volume_muted: false
     default: []
   mode: single
+- id: '1635268542903'
+  alias: Timer - Laundry Light
+  description: The Laundry light can be turned on manually or by starting the Washing
+    machine. This automation will use a timer to turn off the laundry light after
+    15 minutes.
+  trigger:
+  - platform: state
+    entity_id: switch.laundry_light
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 15
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.laundry_light
+  - service: logbook.log
+    data:
+      name: Laundry Light Timer
+      message: The laundry light has been turned off by the timer.
+  mode: restart
