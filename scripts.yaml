@@ -295,7 +295,7 @@ set_light_to_default:
         brightness_pct: "{{ states(mysensor) }}"
     - service: logbook.log
       data:
-        name: "(script) set_light_to_default:"
+        name: "[damyBot] Set Default Light State"
         message: 'Target: {{ mysensor | replace("sensor.default_","light.") }}'
 
 set_switch_to_default:
@@ -317,6 +317,10 @@ set_switch_to_default:
         - service: switch.turn_off
           data_template:
             entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
+        - service: logbook.log
+          data:
+            name: "[damyBot] Set Default Switch State"
+            message: 'Target: {{ mysensor | replace("binary_sensor.default_","switch.") }}'
 
 sonos_new:
   alias: "Sonos NEW TTS announcement script"
