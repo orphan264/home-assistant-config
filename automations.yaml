@@ -1,5 +1,5 @@
 - id: 70f2d33d43304037baaf52f5cfa8c6e4
-  alias: David Wake-up for workday
+  alias: David - Workday Alarm
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: template
@@ -438,32 +438,8 @@
           is_volume_muted: false
     default: []
   mode: single
-- id: '1635268542903'
-  alias: Timer - Laundry Light
-  description: The Laundry light can be turned on manually or by starting the Washing
-    machine. This automation will use a timer to turn off the laundry light after
-    15 minutes.
-  trigger:
-  - platform: state
-    entity_id: switch.laundry_light
-    to: 'on'
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 15
-      seconds: 0
-      milliseconds: 0
-  - service: switch.turn_off
-    target:
-      entity_id: switch.laundry_light
-  - service: logbook.log
-    data:
-      name: Laundry Light Timer
-      message: The laundry light has been turned off by the timer.
-  mode: restart
 - id: '1635272907255'
-  alias: Monitor - Specified Exterior Lights
+  alias: Timer - Lights and Switches
   description: ''
   trigger:
   - platform: template
@@ -474,6 +450,10 @@
     value_template: '{{ states(''sensor.default_exterior_shop_light'') != states(''sensor.brightness_exterior_shop_light'')
       }}'
     id: Shop
+  - platform: template
+    value_template: '{{ states(''binary_sensor.default_laundry_light'') != states(''switch.laundry_light'')
+      }}'
+    id: Laundry
   condition: []
   action:
   - delay:
@@ -491,7 +471,7 @@
           mysensor: sensor.default_exterior_driveway_light
       - service: logbook.log
         data:
-          name: Exterior Light Monitor
+          name: '[damyBot] Light and Switch timer'
           message: Exterior driveway light returned to default brightness
           domain: logbook
     - conditions:
@@ -503,8 +483,20 @@
           mysensor: sensor.default_exterior_shop_light
       - service: logbook.log
         data:
-          name: Exterior Light Monitor
+          name: '[damyBot] Light and Switch timer'
           domain: logbook
           message: Exterior Shop light returned to default brightness
+    - conditions:
+      - condition: trigger
+        id: Laundry
+      sequence:
+      - service: script.set_switch_to_default
+        data:
+          mysensor: binary_sensor.default_laundry_light
+      - service: logbook.log
+        data:
+          name: '[damyBot] Light and Switch timer'
+          domain: logbook
+          message: Laundry light returned to default brightness
   mode: parallel
   max: 5
