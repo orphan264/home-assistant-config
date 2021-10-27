@@ -458,7 +458,7 @@
   action:
   - delay:
       hours: 0
-      minutes: 2
+      minutes: 15
       seconds: 0
       milliseconds: 0
   - choose:
