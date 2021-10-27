@@ -342,31 +342,6 @@
       entity_id: light.living_room_corner_lamp
       brightness_pct: 35
   mode: single
-- id: damybot speedtest reponse for david
-  alias: damybot speedtest reponse for david
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.pushbullet_timestamp
-  condition:
-  - condition: state
-    entity_id: sensor.pushbullet_body
-    state: '#damybot speedtest'
-  - condition: state
-    entity_id: sensor.pushbullet_title
-    state: David Kristiansen
-  action:
-  - service: notify.pb_notify
-    data:
-      title: Internet Speed
-      message: "According to my latest speed tests I am getting {{ states('sensor.spectrumdown')\
-        \ | string }} Mbps down  and {{ states('sensor.spectrumup') }} Mbps up.  {{\
-        \ [ 'I suppose that is the best I can get in nowhere, Maine!',\n    'I will\
-        \ never be able to rule the world with that speed!',\n    'Bots in more civilized\
-        \ places are getting better speeds!',\n    'Fast or slow, thank you Spectrum.'\n\
-        \    ] | random }}"
-      target:
-      - channel/damyBot
 - id: '1634938317979'
   alias: Monitor - Office Phones
   description: ''
