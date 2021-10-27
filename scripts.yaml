@@ -443,6 +443,33 @@ test_smtp2:
               'Fast or slow, thank you Spectrum.'
               ] | random }}
  
+set_default_lights:
+  alias: "Set all lights to scheduled default brightness"
+  sequence:
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_dining_room_table_lamp
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_exterior_shop_light
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_exterior_driveway_light
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_living_room_table_lamps
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_living_room_corner_lamp
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_study_table_lamp
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_bedroom_table_lamp
+    - service: script.set_light_to_default
+      data:
+        mysensor: sensor.default_guest_bedroom_table_lamp
 
 # ###############################################################################
 # # Status Announcements
