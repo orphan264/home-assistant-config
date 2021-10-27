@@ -150,7 +150,7 @@
         '
   mode: single
 - id: Process Default Changes for Lights
-  alias: Process Default Changes for Lights
+  alias: Monitor - Default Lights
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - entity_id: sensor.default_dining_room_table_lamp
@@ -177,7 +177,7 @@
   mode: parallel
   max: 10
 - id: Process Default Changes for Switches
-  alias: Process Default Changes for Switches
+  alias: Monitor - Default Switches
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - entity_id: binary_sensor.default_studio_parlour_floor_lamp
