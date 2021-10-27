@@ -69,6 +69,11 @@
       value_template: >-
         {{ is_state('binary_sensor.tod_overnight','on') }}
    
+    default_laundry_light:
+      friendly_name: "Default - Laundry Light"
+      value_template: >-
+          off
+
     default_christmas_tree:
       friendly_name: "Default - Christmas Tree"
       value_template: >-
