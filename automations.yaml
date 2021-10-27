@@ -65,7 +65,7 @@
       datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
   mode: single
 - id: someone_heading_home
-  alias: Heading Home
+  alias: Proximity - Heading Home
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: numeric_state
