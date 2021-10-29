@@ -14,6 +14,11 @@
   name: Installed
   source: local
 
+- platform: github
+  access_token: !secret github_access_token
+  repositories:
+    - path: 'orphan264/home-assistant-config'
+
 - platform: systemmonitor
   resources:
     - type: disk_use_percent
