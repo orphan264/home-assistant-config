@@ -475,15 +475,15 @@
       sequence:
       - service: script.set_light_to_default
         data:
-          mysensor: default_living_room_table_lamps
+          mysensor: sensor.default_living_room_table_lamps
       - service: script.set_light_to_default
         data:
-          mysensor: default_living_room_corner_lamp
+          mysensor: sensor.default_living_room_corner_lamp
     default:
     - service: script.set_light_to_default
       data:
-        mysensor: default_living_room_table_lamps
+        mysensor: sensor.default_living_room_table_lamps
     - service: script.set_light_to_default
       data:
-        mysensor: default_living_room_corner_lamp
+        mysensor: sensor.default_living_room_corner_lamp
   mode: single
