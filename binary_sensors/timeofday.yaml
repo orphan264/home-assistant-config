@@ -41,3 +41,8 @@
   name: "TOD Holiday Lights"
   after: '15:00'
   before: '21:45'
+
+- platform: tod
+  name: "The Hour of the Wolf"
+  after: '03:00'
+  before: '04:00'
