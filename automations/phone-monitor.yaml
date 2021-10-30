@@ -1,0 +1,71 @@
+- id: '1634938317979'
+  alias: Monitor - Office Phones
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.obihai_office_phone1_port
+    id: Line 1
+  - platform: state
+    entity_id: sensor.obihai_office_phone2_port
+    id: Line 2
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: media_player.office
+      state: playing
+    - condition: state
+      entity_id: media_player.painting_room
+      state: playing
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Line 1
+      - condition: state
+        entity_id: sensor.obihai_office_phone1_port
+        state: Off Hook
+      sequence:
+      - service: media_player.volume_mute
+        target:
+          device_id: 0328cc8388e54a3e88c53a3583d6ee0d
+        data:
+          is_volume_muted: true
+    - conditions:
+      - condition: trigger
+        id: Line 1
+      - condition: state
+        entity_id: sensor.obihai_office_phone1_port
+        state: On Hook
+      sequence:
+      - service: media_player.volume_mute
+        target:
+          device_id: 0328cc8388e54a3e88c53a3583d6ee0d
+        data:
+          is_volume_muted: false
+    - conditions:
+      - condition: trigger
+        id: Line 2
+      - condition: state
+        entity_id: sensor.obihai_office_phone2_port
+        state: Off Hook
+      sequence:
+      - service: media_player.volume_mute
+        target:
+          device_id: 7115c244f68a4bd393929693402d65f7
+        data:
+          is_volume_muted: true
+    - conditions:
+      - condition: trigger
+        id: Line 2
+      - condition: state
+        entity_id: sensor.obihai_office_phone2_port
+        state: On Hook
+      sequence:
+      - service: media_player.volume_mute
+        target:
+          device_id: 7115c244f68a4bd393929693402d65f7
+        data:
+          is_volume_muted: false
+    default: []
+  mode: single
