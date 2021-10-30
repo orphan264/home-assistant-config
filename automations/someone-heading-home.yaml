@@ -1,0 +1,43 @@
+- id: someone_heading_home
+  alias: Proximity - Heading Home
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: numeric_state
+    entity_id:
+    - proximity.david_home
+    - proximity.amy_home
+    below: '5'
+    id: 5 miles
+  - platform: numeric_state
+    entity_id:
+    - proximity.david_home
+    - proximity.amy_home
+    below: '30'
+    id: 30 miles
+  - platform: numeric_state
+    entity_id:
+    - proximity.david_home
+    - proximity.amy_home
+    below: '60'
+    id: 60 miles
+  - platform: numeric_state
+    entity_id:
+    - proximity.david_home
+    - proximity.amy_home
+    below: '100'
+    id: 100 miles
+  - platform: numeric_state
+    entity_id:
+    - proximity.david_home
+    - proximity.amy_home
+    below: '200'
+    id: 200 miles
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
+  action:
+    - service: script.sonos_announce
+      data_template:
+        message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
+          {{ trigger.id }} away and heading home!'
+  mode: single
