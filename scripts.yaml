@@ -508,7 +508,7 @@ status_annc:
           {% endmacro %}
 
           {% macro weather() %}
-            The temperature in Brownville Junction is currently {{ state_attr('weather.home', 'temperature') }} degrees.
+            The temperature is currently {{ state_attr('weather.home', 'temperature') }} degrees.
             The forecast for today is {{ state_attr('weather.home', 'forecast')[0].condition }} 
             with a high of {{ state_attr('weather.home', 'forecast')[0].temperature }} degrees 
             and a low of {{ state_attr('weather.home', 'forecast')[0].templow }} degrees.
