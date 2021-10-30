@@ -1,0 +1,11 @@
+input_announce:
+  name: "Announce Input"
+
+input_chimes:
+  name: "Chimes Input"
+    
+input_guest:
+  name: "Guest Mode"
+
+input_alarm_workday_david:
+  name: "Workday Alarm (David) Input"

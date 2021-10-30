@@ -121,19 +121,6 @@ proximity:
     tolerance: 50
     unit_of_measurement: mi
   
-input_boolean:
-  input_announce:
-    name: "Announce Input"
-
-  input_chimes:
-    name: "Chimes Input"
-    
-  input_guest:
-    name: "Guest Mode"
-
-  input_alarm_workday_david:
-    name: "Workday Alarm (David) Input"
-
 input_datetime:
   alarm_time_david:
     name: "David's Alarm Time"
@@ -178,7 +165,7 @@ binary_sensor: !include_dir_merge_list binary_sensors
 #switch: !include switches.yaml
 #scene: !include scenes.yaml
 #input_select: !include input_select.yaml
-#input_boolean: !include input_boolean.yaml
+input_boolean: !include input_boolean.yaml
 #input_datetime: !include input_datetime.yaml
 group: !include groups.yaml
 zone: !include zones.yaml
