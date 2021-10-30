@@ -35,9 +35,11 @@
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
+  - condition: template
+    value_template: '{{states("group.amy_or_david") == "home" }}'
   action:
     - service: script.sonos_announce
       data_template:
         message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
           {{ trigger.id }} away and heading home!'
-  mode: single
+  mode: parallel
