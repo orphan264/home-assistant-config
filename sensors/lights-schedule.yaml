@@ -1,0 +1,90 @@
+- platform: template
+  sensors:
+    default_dining_room_ceiling_light:
+      friendly_name: "Default - Dining Room Ceiling Light"
+      value_template: >-
+          0
+
+    default_dining_room_table_lamp:
+      friendly_name: "Default - Dining Room Table Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') %}
+          20
+        {% else %}
+          0
+        {% endif %}
+
+    default_exterior_shop_light:
+      friendly_name: "Default - Exterior Shop Light"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') %}
+          20
+        {% else %}
+          0
+        {% endif %}
+
+    default_exterior_driveway_light:
+      friendly_name: "Default - Exterior Driveway Light"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') %}
+          12
+        {% else %}
+          0
+        {% endif %}
+
+    default_living_room_table_lamps:
+      friendly_name: "Default - Living Room Table Lamps"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') and is_state('group.amy_or_david','home') %}
+          35
+        {% else %}
+          0
+        {% endif %}
+
+    default_study_table_lamp:
+      friendly_name: "Default - Study Table Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          20
+        {% else %}
+          0
+        {% endif %}
+
+    default_living_room_corner_lamp:
+      friendly_name: "Default - Living Room Corner Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          20
+        {% elif is_state('binary_sensor.tod_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
+          20
+        {% else %}
+          0
+        {% endif %}
+
+    default_study_ceiling_light:
+      friendly_name: "Default - Study Ceiling Light"
+      value_template: >-
+          0
+
+    default_bedroom_table_lamp:
+      friendly_name: "Default - Bedroom Table Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('group.amy_or_david','home') %}
+          18
+        {% else %}
+          0
+        {% endif %}
+
+    default_guest_livingroom_ceiling_light:
+      friendly_name: "Default - Guest Livingroom Ceiling Light"
+      value_template: >-
+          0
+
+    default_guest_bedroom_table_lamp:
+      friendly_name: "Default - Guest Bedroom Table Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('binary_sensor.guest_mode','on') %}
+          22
+        {% else %}
+          0
+        {% endif %}
