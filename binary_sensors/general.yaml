@@ -63,34 +63,3 @@
         {{ is_state('binary_sensor.shop_door','off') }}
       icon_template: >-
           mdi:sleep
-
-    default_studio_parlour_floor_lamp:
-      friendly_name: "Default - Studio Parlour Floor Lamp"
-      value_template: >-
-        {{ is_state('binary_sensor.tod_overnight','on') }}
-   
-    default_laundry_light:
-      friendly_name: "Default - Laundry Light"
-      value_template: >-
-          off
-
-    default_christmas_tree:
-      friendly_name: "Default - Christmas Tree"
-      value_template: >-
-        {% if is_state('binary_sensor.tod_holiday_lights','on') and is_state('group.amy_or_david','home') %}
-          on
-        {% elif is_state('binary_sensor.tod_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
-          on
-        {% else %}
-          off
-        {% endif %}
-
-#    default_exterior_outlet_1:
-#      friendly_name: "Default - Exterior Outlet 1"
-#      value_template: >-
-#        {{ is_state('binary_sensor.tod_evening','on') }}
-
-    default_porch:
-      friendly_name: "Default - Porch"
-      value_template: >-
-        {{ is_state('binary_sensor.tod_evening','on') }}
