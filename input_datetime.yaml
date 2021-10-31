@@ -1,4 +1,3 @@
-input_datetime:
   alarm_time_david:
     name: "David's Alarm Time"
     has_date: false
