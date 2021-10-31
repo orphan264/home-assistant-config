@@ -6,11 +6,26 @@
     entity_id: weather.home
   condition:
   - condition: template
-    value_template: '{{ ''rainy'' in trigger.from_state.state or ''rainy'' in trigger.to_state.state
-      }}'
+    value_template: '{{ ''rain'' in trigger.from_state.state or ''rain'' in trigger.to_state.state or ''rainy'' in trigger.from_state.state or ''rainy'' in trigger.to_state.state }}'
   action:
   - service: input_datetime.set_datetime
     entity_id: input_datetime.last_rain
+    data_template:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+  mode: single
+
+- id: save_last_snow
+  alias: Save the date and time of last snow
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: state
+    entity_id: weather.home
+  condition:
+  - condition: template
+    value_template: '{{ ''snow'' in trigger.from_state.state or ''snow'' in trigger.to_state.state }}'
+  action:
+  - service: input_datetime.set_datetime
+    entity_id: input_datetime.last_snow
     data_template:
       datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
   mode: single

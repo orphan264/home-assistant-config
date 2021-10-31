@@ -169,6 +169,14 @@
 
 - platform: template
   sensors:
+    last_rain:
+      device_class: timestamp
+      value_template: "{{ states('input_datetime.last_rain') }}"
+
+    last_snow:
+      device_class: timestamp
+      value_template: "{{ states('input_datetime.last_snow') }}"      
+
     plex_livingroom_playing:
       friendly_name: 'Currently Playing on Plex - Livingroom'
       value_template: "{{ state_attr('media_player.plex_plex_for_roku_livingroom', 'media_content_type') }}"
