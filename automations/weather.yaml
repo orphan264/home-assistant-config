@@ -1,0 +1,16 @@
+- id: save_last_rain
+  alias: Save the date and time of last rain
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: state
+    entity_id: weather.home
+  condition:
+  - condition: template
+    value_template: '{{ ''rainy'' in trigger.from_state.state or ''rainy'' in trigger.to_state.state
+      }}'
+  action:
+  - service: input_datetime.set_datetime
+    entity_id: input_datetime.last_rain
+    data_template:
+      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+  mode: single
