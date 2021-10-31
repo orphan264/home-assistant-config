@@ -8,7 +8,9 @@
     default_dining_room_table_lamp:
       friendly_name: "Default - Dining Room Table Lamp"
       value_template: >-
-        {% if is_state('binary_sensor.tod_overnight','on') %}
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          20
+        {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
           20
         {% else %}
           0
@@ -55,7 +57,7 @@
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') %}
           20
-        {% elif is_state('binary_sensor.tod_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
+        {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
           20
         {% else %}
           0
