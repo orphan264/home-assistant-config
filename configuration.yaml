@@ -120,7 +120,6 @@ proximity:
       - device_tracker.life360_ken_howard
     tolerance: 50
     unit_of_measurement: mi
-  
 
 sonoff:
   username: !secret ewe_username
