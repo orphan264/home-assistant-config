@@ -121,16 +121,6 @@ proximity:
     tolerance: 50
     unit_of_measurement: mi
   
-input_datetime:
-  alarm_time_david:
-    name: "David's Alarm Time"
-    has_date: false
-    has_time: true
-
-  last_rain:
-    name: Time of last reported rainfall
-    has_date: true
-    has_time: true
 
 sonoff:
   username: !secret ewe_username
@@ -166,7 +156,7 @@ binary_sensor: !include_dir_merge_list binary_sensors
 #scene: !include scenes.yaml
 #input_select: !include input_select.yaml
 input_boolean: !include input_boolean.yaml
-#input_datetime: !include input_datetime.yaml
+input_datetime: !include input_datetime.yaml
 group: !include groups.yaml
 zone: !include zones.yaml
 

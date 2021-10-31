@@ -1,0 +1,10 @@
+input_datetime:
+  alarm_time_david:
+    name: "David's Alarm Time"
+    has_date: false
+    has_time: true
+
+  last_rain:
+    name: Time of last reported rainfall
+    has_date: true
+    has_time: true
