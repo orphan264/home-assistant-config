@@ -167,7 +167,7 @@
   - platform: numeric_state
     entity_id: sensor.washer_power
     below: '15'
-    for: 00:02:00
+    for: 00:02:30
   condition: []
   action:
   - choose:
