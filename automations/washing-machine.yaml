@@ -1,0 +1,38 @@
+- id: '1609091851036'
+  alias: Monitor - Washing Machine
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washer_power
+    above: '15'
+    for: 00:00:30
+    id: Washing
+  - platform: numeric_state
+    entity_id: sensor.washer_power
+    below: '15'
+    for: 00:02:30
+    id: Ready
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Washing
+      sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.state_washingmachine
+          option: Washing
+    - conditions:
+      - condition: trigger
+        id: Ready
+      sequence:
+      - service: input_select.select_option
+        data:
+          entity_id: input_select.state_washingmachine
+          option: Ready
+      - service: script.sonos_announce
+        data:
+          message: The washing machine has finished and is ready to be emptied!
+    default: []
+  mode: single
