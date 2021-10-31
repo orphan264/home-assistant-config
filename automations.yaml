@@ -156,53 +156,6 @@
     default: []
   mode: queued
   max: 5
-- id: '1609091851036'
-  alias: Monitor - Washing Machine
-  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.washer_power
-    above: '15'
-    for: 00:00:30
-  - platform: numeric_state
-    entity_id: sensor.washer_power
-    below: '15'
-    for: 00:02:30
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.washer_power
-        above: '15'
-      sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.state_washingmachine
-          option: Washing
-      - service: switch.turn_on
-        data:
-          entity_id: switch.laundry_light
-    - conditions:
-      - condition: numeric_state
-        entity_id: sensor.washer_power
-        below: '15'
-      - condition: state
-        entity_id: input_select.state_washingmachine
-        state: Washing
-      sequence:
-      - service: input_select.select_option
-        data:
-          entity_id: input_select.state_washingmachine
-          option: Ready
-      - service: script.sonos_announce
-        data:
-          message: The washing machine has finished and is ready to be emptied!
-      - service: switch.turn_on
-        data:
-          entity_id: switch.laundry_light
-    default: []
-  mode: single
 - id: '1609099392133'
   alias: Monitor - Shop Door
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
