@@ -1,9 +1,14 @@
-  alarm_time_david:
-    name: "David's Alarm Time"
-    has_date: false
-    has_time: true
+alarm_time_david:
+  name: "David's Alarm Time"
+  has_date: false
+  has_time: true
 
-  last_rain:
-    name: Time of last reported rainfall
-    has_date: true
-    has_time: true
+last_rain:
+  name: "Date and Time of last reported rainfall"
+  has_date: true
+  has_time: true
+
+last_snow:
+  name: "Date and Time of last reported snowfall"
+  has_date: true
+  has_time: true

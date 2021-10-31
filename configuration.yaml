@@ -136,14 +136,6 @@ utility_meter:
     source: sensor.vs988_steps_sensor
     cycle: daily
 
-input_select:
-  state_washingmachine:
-    name: Washing Machine state
-    options:
-      - Ready
-      - Washing
-    icon: mdi:tumble-dryer
-  
 ### Includes ###
 #alert: !include_dir_merge_named alerts/
 automation manual: !include_dir_merge_list automations/
@@ -154,7 +146,7 @@ binary_sensor: !include_dir_merge_list binary_sensors
 #light: !include lights.yaml
 #switch: !include switches.yaml
 #scene: !include scenes.yaml
-#input_select: !include input_select.yaml
+input_select: !include input_select.yaml
 input_boolean: !include input_boolean.yaml
 input_datetime: !include input_datetime.yaml
 group: !include groups.yaml

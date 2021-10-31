@@ -1,0 +1,6 @@
+state_washingmachine:
+  name: Washing Machine state
+  options:
+    - Ready
+    - Washing
+  icon: mdi:tumble-dryer
