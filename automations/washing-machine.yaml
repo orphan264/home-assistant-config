@@ -31,8 +31,13 @@
         data:
           entity_id: input_select.state_washingmachine
           option: Ready
-      - service: script.sonos_announce
-        data:
-          message: The washing machine has finished and is ready to be emptied!
+    - service: script.tts_house
+      data:
+        tts_broadcast: 1
+        tts_message: The washing machine has finished and is ready to be emptied!
+    - service: script.tts_studio
+      data:
+        tts_broadcast: 1
+        tts_message: The washing machine has finished and is ready to be emptied!
     default: []
   mode: single
