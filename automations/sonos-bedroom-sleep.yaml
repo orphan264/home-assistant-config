@@ -13,13 +13,12 @@
     entity_id: person.David
     state: home
   action:
-  - service: script.sonos_say
-    data:
-      sonos_entity: media_player.bedroom
-      volume: 0.11
-      message: Sleep mode activated. Good Night!
-      delay: 00:00:04
-  - delay: 00:00:05
-  - service: script.sonos_sleep_music
+    - service: script.tts_house
+      data:
+        tts_target: 1
+        tts_speaker: media_player.bedroom
+        tts_message: Sleep mode activated. Good Night!
+    - delay: 00:00:05
+    - service: script.sonos_sleep_music
   initial_state: true
   mode: single
