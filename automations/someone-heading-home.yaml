@@ -38,8 +38,14 @@
   - condition: template
     value_template: '{{states("group.amy_or_david") == "home" }}'
   action:
-    - service: script.sonos_announce
+    - service: script.tts_house
       data_template:
-        message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
+        tts_broadcast: 1
+        tts_message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
+          {{ trigger.id }} away and heading home!'
+    - service: script.tts_studio
+      data_template:
+        tts_broadcast: 1
+        tts_message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
           {{ trigger.id }} away and heading home!'
   mode: parallel
