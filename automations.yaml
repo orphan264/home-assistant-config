@@ -13,11 +13,11 @@
     entity_id: binary_sensor.workday_david
     state: 'on'
   action:
-  - service: script.sonos_say
-    data_template:
-      sonos_entity: media_player.bedroom
-      volume: 0.4
-      message: Good Morning David! Time to wake up!
+  - service: script.tts_house
+    data:
+      tts_target: 1
+      tts_speaker: media_player.bedroom
+      tts_message: Good Morning David! Time to wake up!
   - delay: 00:00:10
   - service: media_player.volume_set
     data:
@@ -40,9 +40,18 @@
     event: sunset
     offset: -00:30:15
   action:
-  - service: script.sonos_announce
+  - service: script.tts_house
     data_template:
-      message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+      tts_broadcast: 1
+      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
+        I will take care of the lights!", "Activating evening lights! Don''t stay
+        up too late!", "That''s OK, You relax, I will take care of the lights." ]
+        |random }}'
+  - service: script.tts_studio
+    data_template:
+      tts_broadcast: 1
+      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
         be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
         I will take care of the lights!", "Activating evening lights! Don''t stay
         up too late!", "That''s OK, You relax, I will take care of the lights." ]
