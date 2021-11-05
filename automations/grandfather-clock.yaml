@@ -10,5 +10,10 @@
     after: 07:30:00
     before: '19:15:00'
   action:
-  - service: script.clock_chime
+    - service: script.tts_house
+      data:
+        tts_chimes: 1
+    - service: script.tts_studio
+      data:
+        tts_chimes: 1
   mode: single
