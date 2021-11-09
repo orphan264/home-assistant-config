@@ -4,10 +4,7 @@
     - platform: homeassistant
       event: start
   action:
-    - service: notify.pb_notify
+    - service: notify.persistent_notification
       data:
+        message: Home Assistant version {{ states('sensor.installed') }} has started and damyBot is ready!
         title: "[damyBot] HomeAssistant has Started"
-        message: >-
-          Home Assistant version {{ states('sensor.installed') }} has started and damyBot is ready!
-        target: 
-          - channel/damyBot
