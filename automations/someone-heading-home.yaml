@@ -33,10 +33,11 @@
     below: '200'
     id: 200 miles
   condition:
+  - condition: state
+    entity_id: binary_sensor.announce
+    state: 'on'
   - condition: template
     value_template: '{{ trigger.to_state.attributes.dir_of_travel  == "towards" }}'
-  - condition: template
-    value_template: '{{states("group.amy_or_david") == "home" }}'
   action:
     - service: script.tts_house
       data_template:
