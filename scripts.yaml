@@ -541,7 +541,7 @@ tts_house:
           data:
             entity_id: 
               - media_player.living_room
-            volume_level: 0.40
+            volume_level: 0.36
         - service: media_player.play_media
           data:
             entity_id: 
