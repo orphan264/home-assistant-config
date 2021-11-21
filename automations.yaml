@@ -112,6 +112,8 @@
     platform: state
   - entity_id: binary_sensor.default_christmas_tree
     platform: state
+  - entity_id: binary_sensor.default_holiday_lights_1
+    platform: state
   condition: []
   action:
   - service: script.set_switch_to_default

@@ -3,7 +3,13 @@
     default_studio_parlour_floor_lamp:
       friendly_name: "Default - Studio Parlour Floor Lamp"
       value_template: >-
-        {{ is_state('binary_sensor.tod_overnight','on') }}
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('binary_sensor.guest_mode','on') %}
+          on
+        {% elif is_state('binary_sensor.tod_evening','on') %}
+          on
+        {% else %}
+          off
+        {% endif %}
    
     default_laundry_light:
       friendly_name: "Default - Laundry Light"
@@ -21,10 +27,10 @@
           off
         {% endif %}
 
-#    default_exterior_outlet_1:
-#      friendly_name: "Default - Exterior Outlet 1"
-#      value_template: >-
-#        {{ is_state('binary_sensor.tod_evening','on') }}
+    default_holiday_lights_1:
+      friendly_name: "Default - Holiday Lights 1"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_overnight','on') }}
 
     default_porch:
       friendly_name: "Default - Porch"
