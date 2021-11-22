@@ -1,0 +1,251 @@
+- platform: template
+  sensors:
+    last_rain:
+      device_class: timestamp
+      value_template: "{{ states('input_datetime.last_rain') }}"
+    last_snow:
+      device_class: timestamp
+      value_template: "{{ states('input_datetime.last_snow') }}"      
+
+    shop_door_last_opened:
+      value_template: >
+          {{ states.binary_sensor.shop_door.last_changed }}
+      device_class: timestamp
+
+    plex_livingroom_playing:
+      friendly_name: 'Currently Playing on Plex - Livingroom'
+      value_template: "{{ state_attr('media_player.plex_plex_for_roku_livingroom', 'media_content_type') }}"
+
+    today_is:
+      friendly_name: 'Today is'
+      value_template: "{{ ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][now().weekday()] }}" 
+
+    battery_david:
+      friendly_name: "David's Battery"
+      value_template: "{{ state_attr('device_tracker.life360_david', 'battery') }}"
+      unit_of_measurement: '%'
+      device_class: battery
+
+    battery_charging_david:
+      friendly_name: "David's Phone is Charging"
+      value_template: "{{ state_attr('device_tracker.life360_david', 'battery_charging') }}"
+
+    battery_ken:
+      friendly_name: "Ken's Battery"
+      value_template: "{{ state_attr('device_tracker.life360_ken_howard', 'battery') }}"
+      unit_of_measurement: '%'
+      device_class: battery
+
+    battery_charging_ken:
+      friendly_name: "Ken's Phone is Charging"
+      value_template: "{{ state_attr('device_tracker.life360_ken_howard', 'battery_charging') }}"
+
+    battery_nexus:
+      friendly_name: "Nexus 7 Battery"
+      value_template: "{{ state_attr('device_tracker.nexus_7', 'battery_level') }}"
+      unit_of_measurement: '%'
+      device_class: battery
+
+    battery_amy:
+      friendly_name: Amy's Battery
+      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery') }}"
+      unit_of_measurement: '%'
+      device_class: battery
+
+    battery_charging_amy:
+      friendly_name: "Amy's Phone is Charging"
+      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery_charging') }}"
+
+    sonos_office_volume:
+      value_template: "{{ state_attr('media_player.office', 'volume_level') }}"
+
+    sonos_bedroom_volume:
+      value_template: "{{ state_attr('media_player.bedroom', 'volume_level') }}"
+
+    sonos_study_volume:
+      value_template: "{{ state_attr('media_player.study', 'volume_level') }}"
+
+    sonos_painting_room_volume:
+      value_template: "{{ state_attr('media_player.painting_room', 'volume_level') }}"
+
+#    sonos_dining_room_volume:
+#      value_template: "{{ state_attr('media_player.dining_room', 'volume_level') }}"
+
+    sonos_living_room_volume:
+      value_template: "{{ state_attr('media_player.living_room', 'volume_level') }}"
+
+#####
+
+    brightness_exterior_shop_light:
+      friendly_name: "Brightness - Exterior Shop Light"
+      value_template: >
+        {% if state_attr('light.exterior_shop_light', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.exterior_shop_light', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_exterior_driveway_light:
+      friendly_name: "Brightness - Exterior Driveway Light"
+      value_template: >
+        {% if state_attr('light.exterior_driveway_light', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.exterior_driveway_light', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_living_room_table_lamps:
+      friendly_name: "Brightness - Living Room Table Lamps"
+      value_template: >
+        {% if state_attr('light.living_room_table_lamps', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.living_room_table_lamps', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_living_room_corner_lamp:
+      friendly_name: "Brightness - Living Room Corner Lamp"
+      value_template: >
+        {% if state_attr('light.living_room_corner_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.living_room_corner_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_dining_room_ceiling_light:
+      friendly_name: "Brightness - Dining Room Ceiling Light"
+      value_template: >
+        {% if state_attr('light.dining_room_ceiling_light', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.dining_room_ceiling_light', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_dining_room_table_lamp:
+      friendly_name: "Brightness - Dining Room Table Lamp"
+      value_template: >
+        {% if state_attr('light.dining_room_table_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.dining_room_table_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_study_ceiling_light:
+      friendly_name: "Brightness - Study Ceiling Light"
+      value_template: >
+        {% if state_attr('light.study_ceiling_light', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.study_ceiling_light', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_study_table_lamp:
+      friendly_name: "Brightness - Study Table Lamp"
+      value_template: >
+        {% if state_attr('light.study_table_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.study_table_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_bedroom_table_lamp:
+      friendly_name: "Brightness - Bedroom Table Lamp"
+      value_template: >
+        {% if state_attr('light.bedroom_table_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.bedroom_table_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_guest_livingroom_ceiling_light:
+      friendly_name: "Brightness - Guest Livingroom Ceiling Light"
+      value_template: >
+        {% if state_attr('light.guest_livingroom_ceiling_light', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.guest_livingroom_ceiling_light', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
+    brightness_guest_bedroom_table_lamp:
+      friendly_name: "Brightness - Guest Bedroom Table Lamp"
+      value_template: >
+        {% if state_attr('light.guest_bedroom_table_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.guest_bedroom_table_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+###
+
+    nextsunrise:
+      friendly_name: 'Next Sunrise'
+      value_template: >
+        {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom(' %I:%M %p') | replace(" 0", "") }}
+      icon_template: mdi:weather-sunset-up
+
+    nextsunset:
+      friendly_name: 'Next Sunset'
+      value_template: >
+        {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom(' %I:%M %p') | replace(" 0", "") }}
+      icon_template: mdi:weather-sunset-down
+
+    hass_count:
+      friendly_name: HASS Count
+      icon_template: mdi:home-assistant
+      value_template: "{{ states | count }}"
+      attribute_templates:
+        automation: "{{ states.automation | count }}"
+        binary_sensor: "{{ states.binary_sensor | count }}"
+#        camera: "{{ states.camera | count }}"
+#        climate: "{{ states.climate | count }}"
+        device_tracker: "{{ states.device_tracker | count }}"
+        light: "{{ states.light | count }}"
+        media_player: "{{ states.media_player | count }}"
+        scene: "{{ states.scene | count }}"
+        script: "{{ states.script | count }}"
+        sensor: "{{ states.sensor | count }}"
+        switch: "{{ states.switch | count }}"
+
+
+    temperature_accuweather:
+      friendly_name: "Temperature - Outside"
+      value_template: >
+          {{ state_attr('weather.home', 'temperature') }}
+      unit_of_measurement: '°F'
+
+    doors_open_count:
+      friendly_name: Number of doors open
+      icon_template: mdi:door-open
+      value_template: >-
+        {{ states.binary_sensor 
+        | selectattr('attributes.device_class', 'eq', 'door')
+        | selectattr('state', 'eq', 'on')
+        | list | length }}
+
+    lights_on_count:
+      friendly_name: Number of lights on
+      icon_template: mdi:lightbulb-on-outline
+      value_template: >-
+        {{ states.light | selectattr('state', 'eq', 'on') | list | length }}
+
+    switches_on_count:
+      friendly_name: Number of switches on
+      icon_template: mdi:lightbulb-on-outline
+      value_template: >-
+        {{ states.switch | selectattr('state', 'eq', 'on') | list | length }}
+
+    people_home_count:
+      friendly_name: Number of people at home
+      icon_template: mdi:account-multiple
+      value_template: >-
+        {{ states.person | selectattr('state', 'eq', 'home') | list | length }}
