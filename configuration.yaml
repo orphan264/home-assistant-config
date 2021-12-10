@@ -10,6 +10,7 @@ homeassistant:
     - /config/www/sounds
   customize: !include customize.yaml
   auth_providers:
+    - type: homeassistant
     - type: trusted_networks
       trusted_networks: !secret ip_trusted_network
 
