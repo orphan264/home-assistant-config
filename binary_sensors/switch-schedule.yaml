@@ -19,9 +19,20 @@
     default_christmas_tree:
       friendly_name: "Default - Christmas Tree"
       value_template: >-
-        {% if is_state('binary_sensor.tod_evening','on') and is_state('group.amy_or_david','home') %}
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          on
+        {% elif is_state('binary_sensor.tod_daytime','on') and is_state('group.amy_or_david','home') %}
           on
         {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+
+    default_christmas_tree_studio:
+      friendly_name: "Default - Studio Christmas Tree"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') %}
           on
         {% else %}
           off
