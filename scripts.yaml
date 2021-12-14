@@ -1,701 +1,643 @@
 sonos_reset:
-  alias: "Reset Sonos"
-  sequence: 
-    - service: sonos.unjoin
-      data_template:
-        entity_id: "{{ sonos_entity }}"
-    - service: sonos.clear_sleep_timer
-      data_template:
-       entity_id: "{{ sonos_entity }}"
-    - service: media_player.media_stop
-      data_template:
-        entity_id: "{{ sonos_entity }}"
-    - service: media_player.clear_playlist
-      data_template:
-        entity_id: "{{ sonos_entity }}"
-
-sonos_sleep_music:
-  alias: "Play music for sleeping"
+  alias: Reset Sonos
   sequence:
+  - service: sonos.unjoin
+    data_template:
+      entity_id: '{{ sonos_entity }}'
+  - service: sonos.clear_sleep_timer
+    data_template:
+      entity_id: '{{ sonos_entity }}'
+  - service: media_player.media_stop
+    data_template:
+      entity_id: '{{ sonos_entity }}'
+  - service: media_player.clear_playlist
+    data_template:
+      entity_id: '{{ sonos_entity }}'
+sonos_sleep_music:
+  alias: Play music for sleeping
+  sequence:
+  - service: sonos.unjoin
+    data:
+      entity_id: media_player.bedroom
+  - service: media_player.media_stop
+    data:
+      entity_id: media_player.bedroom
+  - service: media_player.clear_playlist
+    data:
+      entity_id: media_player.bedroom
+  - service: sonos.clear_sleep_timer
+    data:
+      entity_id: media_player.bedroom
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom
+      volume_level: 0.07
+  - service: sonos.set_sleep_timer
+    data:
+      entity_id: media_player.bedroom
+      sleep_time: 4200
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.bedroom
+      source: Quiet Evening
+  - service: media_player.shuffle_set
+    data:
+      entity_id: media_player.bedroom
+      shuffle: true
+arrive_home_anyone:
+  alias: Anyone Arrives Home
+  sequence:
+  - service: script.driveway_light_brighten
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_bedroom_table_lamp
+  - service: script.set_switch_to_default
+    data:
+      mysensor: sensor.default_christmas_tree
+arrive_home_amy:
+  alias: Amy Arrives Home
+  sequence:
+  - delay: 00:02:30
+  - service: script.tts_house
+    data:
+      tts_broadcast: 1
+      tts_message: Welcome Home Amy!
+  - service: script.tts_studio
+    data:
+      tts_broadcast: 1
+      tts_message: Welcome Home Amy!
+arrive_home_david:
+  alias: David Arrives Home
+  sequence:
+  - delay: 00:02:30
+  - service: script.tts_house
+    data:
+      tts_broadcast: 1
+      tts_message: Welcome Home David!
+  - service: script.tts_studio
+    data:
+      tts_broadcast: 1
+      tts_message: Welcome Home David!
+driveway_light_brighten:
+  alias: Activate Driveway Light
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.tod_overnight
+    state: 'on'
+  - service: light.turn_on
+    data:
+      entity_id: light.exterior_driveway_light
+      brightness_pct: 100
+shop_light_brighten:
+  alias: Activate Shop Light
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.tod_overnight
+    state: 'on'
+  - service: light.turn_on
+    data:
+      entity_id: light.exterior_shop_light
+      brightness_pct: 100
+set_light_to_default:
+  alias: Set light to default brightness level
+  mode: parallel
+  sequence:
+  - service: light.turn_on
+    data_template:
+      entity_id: '{{ mysensor | replace("sensor.default_","light.") }}'
+      brightness_pct: '{{ states(mysensor) }}'
+  - service: logbook.log
+    data:
+      name: '[damyBot] Set Default Light State'
+      message: 'Target: {{ mysensor | replace("sensor.default_","light.") }}'
+set_switch_to_default:
+  alias: Set switch to default brightness level
+  mode: parallel
+  sequence:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ is_state(mysensor,''on'') }}'
+      sequence:
+      - service: switch.turn_on
+        data_template:
+          entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
+    - conditions:
+      - condition: template
+        value_template: '{{ is_state(mysensor,''off'') }}'
+      sequence:
+      - service: switch.turn_off
+        data_template:
+          entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
+      - service: logbook.log
+        data:
+          name: '[damyBot] Set Default Switch State'
+          message: 'Target: {{ mysensor | replace("binary_sensor.default_","switch.")
+            }}'
+tts_studio:
+  alias: TTS Studio Controller
+  mode: queued
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.announce
+    state: 'on'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_broadcast == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: media_player.media_pause
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.join
+        data:
+          master: media_player.office
+          entity_id:
+          - media_player.painting_room
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.office
+          volume_level: 0.4
+      - service: media_player.play_media
+        data:
+          entity_id:
+          - media_player.office
+          media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+          media_content_type: music
+      - delay: 00:00:02
+      - service: tts.google_say
+        data_template:
+          entity_id:
+          - media_player.office
+          message: '{{ tts_message }}'
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+          with_group: true
+      - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_target == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: media_player.media_pause
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: sonos.unjoin
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          volume_level: 0.4
+      - service: media_player.play_media
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+          media_content_type: music
+      - delay: 00:00:02
+      - service: tts.google_say
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          message: '{{ tts_message }}'
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(tts_speaker, ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.restore
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          with_group: true
+      - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_chimes == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.join
+        data:
+          master: media_player.office
+          entity_id:
+          - media_player.painting_room
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.office
+          volume_level: 0.26
+      - service: media_player.play_media
+        data_template:
+          entity_id:
+          - media_player.office
+          media_content_id: 'http://10.10.10.141:8123/local/sounds/GrandFatherChime{{now().strftime("%I")}}.wav
+
+            '
+          media_content_type: music
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+          with_group: true
+      - delay: 00:00:02
+    default:
+    - service: sonos.snapshot
+      data:
+        entity_id:
+        - media_player.office
+    - service: media_player.media_pause
+      data:
+        entity_id:
+        - media_player.office
     - service: sonos.unjoin
       data:
-        entity_id: media_player.bedroom
-    - service: media_player.media_stop
-      data:
-        entity_id: media_player.bedroom
-    - service: media_player.clear_playlist
-      data:
-        entity_id: media_player.bedroom
-    - service: sonos.clear_sleep_timer
-      data:
-       entity_id: media_player.bedroom
+        entity_id:
+        - media_player.office
     - service: media_player.volume_set
       data:
-        entity_id: media_player.bedroom
-        volume_level: 0.07
-    - service: sonos.set_sleep_timer
+        entity_id:
+        - media_player.office
+        volume_level: 0.4
+    - service: media_player.play_media
       data:
-        entity_id: media_player.bedroom
-        sleep_time: 4200
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.bedroom
-        source: 'Quiet Evening'
-    - service: media_player.shuffle_set
-      data:
-        entity_id: media_player.bedroom
-        shuffle: true
-
-#--------------------------------------------------------------------------------- 
-arrive_home_anyone:
-  alias: "Anyone Arrives Home"
-  sequence:
-    - service: script.driveway_light_brighten
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_bedroom_table_lamp
-    - service: script.set_switch_to_default
-      data:
-        mysensor: sensor.default_christmas_tree
-
-
-#--------------------------------------------------------------------------------- 
-arrive_home_amy:
-  alias: "Amy Arrives Home"
-  sequence:
-    - delay: '00:02:30'
-    - service: script.tts_house
-      data:
-        tts_broadcast: 1
-        tts_message: 'Welcome Home Amy!'
-    - service: script.tts_studio
-      data:
-        tts_broadcast: 1
-        tts_message: 'Welcome Home Amy!'
-
-#--------------------------------------------------------------------------------- 
-arrive_home_david:
-  alias: "David Arrives Home"
-  sequence:
-    - delay: '00:02:30'
-    - service: script.tts_house
-      data:
-        tts_broadcast: 1
-        tts_message: 'Welcome Home David!'
-    - service: script.tts_studio
-      data:
-        tts_broadcast: 1
-        tts_message: 'Welcome Home David!'
-
-#--------------------------------------------------------------------------------- 
-driveway_light_brighten:
-  alias: "Activate Driveway Light"
-  sequence:
-    - condition: state
-      entity_id: binary_sensor.tod_overnight
-      state: 'on'
-    - service: light.turn_on
-      data:
-        entity_id: light.exterior_driveway_light
-        brightness_pct: 100
-       
-shop_light_brighten:
-  alias: "Activate Shop Light"
-  sequence:
-    - condition: state
-      entity_id: binary_sensor.tod_overnight
-      state: 'on'
-    - service: light.turn_on
-      data:
-        entity_id: light.exterior_shop_light
-        brightness_pct: 100
-
-
-set_light_to_default:
-  alias: "Set light to default brightness level"
-  mode: parallel
-  sequence:
-    - service: light.turn_on
+        entity_id:
+        - media_player.office
+        media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+        media_content_type: music
+    - delay: 00:00:02
+    - service: tts.google_say
       data_template:
-        entity_id: '{{ mysensor | replace("sensor.default_","light.") }}'
-        brightness_pct: "{{ states(mysensor) }}"
-    - service: logbook.log
+        entity_id:
+        - media_player.office
+        message: '{{ tts_message }}'
+    - delay:
+        seconds: 1
+    - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
+    - delay:
+        seconds: 1
+    - service: sonos.restore
       data:
-        name: "[damyBot] Set Default Light State"
-        message: 'Target: {{ mysensor | replace("sensor.default_","light.") }}'
-
-set_switch_to_default:
-  alias: "Set switch to default brightness level"
-  mode: parallel
-  sequence:
-    - choose:
-      - conditions:
-          - condition: template
-            value_template: "{{ is_state(mysensor,'on') }}"
-        sequence:
-        - service: switch.turn_on
-          data_template:
-            entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
-      - conditions:
-          - condition: template
-            value_template: "{{ is_state(mysensor,'off') }}"
-        sequence:
-        - service: switch.turn_off
-          data_template:
-            entity_id: '{{ mysensor | replace("binary_sensor.default_","switch.") }}'
-        - service: logbook.log
-          data:
-            name: "[damyBot] Set Default Switch State"
-            message: 'Target: {{ mysensor | replace("binary_sensor.default_","switch.") }}'
-
-tts_studio:
-  alias: "TTS Studio Controller"
-  mode: queued
-  sequence:
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_broadcast == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-        - service: media_player.media_pause
-          data:
-           entity_id: 
-             - media_player.office
-             - media_player.painting_room
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-             - media_player.office
-             - media_player.painting_room
-        - service: sonos.join
-          data:
-            master: media_player.office
-          entity_id:
-            - media_player.painting_room
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.office
-            volume_level: 0.40
-        - service: media_player.play_media
-          data:
-            entity_id: 
-              - media_player.office
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: 
-              - media_player.office
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.office', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-            with_group: yes
-        - delay: '00:00:02'
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_target == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: media_player.media_pause
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: sonos.unjoin
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: media_player.volume_set
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            volume_level: 0.40
-        - service: media_player.play_media
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state(tts_speaker, 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.restore
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            with_group: yes
-        - delay: '00:00:02'
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_chimes == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-        - service: sonos.join
-          data:
-            master: media_player.office
-          entity_id:
-            - media_player.painting_room
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.office
-            volume_level: 0.26
-        - service: media_player.play_media
-          data_template:
-            entity_id: 
-              - media_player.office
-            media_content_id: >
-               http://10.10.10.141:8123/local/sounds/GrandFatherChime{{now().strftime("%I")}}.wav
-            media_content_type: music
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.office', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.office
-              - media_player.painting_room
-            with_group: yes
-        - delay: '00:00:02'
-      default:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.office
-        - service: media_player.media_pause
-          data:
-           entity_id: 
-              - media_player.office
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-             - media_player.office
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.office
-            volume_level: 0.40
-        - service: media_player.play_media
-          data:
-            entity_id: 
-              - media_player.office
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: 
-              - media_player.office
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.office', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.office
-            with_group: yes
-        - delay: '00:00:02'
-
-
+        entity_id:
+        - media_player.office
+        with_group: true
+    - delay: 00:00:02
+  max: 10
 test_new_tts:
-  alias: "Test new sonos announcements"
+  alias: Test new sonos announcements
   sequence:
-    - service: script.tts_studio
-      data:
-        tts_broadcast: 1
-        tts_message: This is a test of the text-to-speech announcement system!
-    - service: script.tts_studio
-      data:
-        tts_target: 1
-        tts_speaker: media_player.painting_room
-        tts_message: This is Test number 2
-    - service: script.tts_studio
-      data:
-        tts_chimes: 1
-    - service: script.tts_studio
-      data:
-        tts_message: This is Test number 4
-
+  - service: script.tts_studio
+    data:
+      tts_broadcast: 1
+      tts_message: This is a test of the text-to-speech announcement system!
+  - service: script.tts_studio
+    data:
+      tts_target: 1
+      tts_speaker: media_player.painting_room
+      tts_message: This is Test number 2
+  - service: script.tts_studio
+    data:
+      tts_chimes: 1
+  - service: script.tts_studio
+    data:
+      tts_message: This is Test number 4
 test_new_tts2:
-  alias: "Test new sonos announcements again"
+  alias: Test new sonos announcements again
   sequence:
-    - service: script.tts_house
-      data:
-        tts_broadcast: 1
-        tts_message: This is a test of the text-to-speech announcement system!
-    - service: script.tts_house
-      data:
-        tts_target: 1
-        tts_speaker: media_player.living_room
-        tts_message: This is Test number 2
-    - service: script.tts_house
-      data:
-        tts_chimes: 1
-    - service: script.tts_house
-      data:
-        tts_message: This is Test number 4
-
+  - service: script.tts_house
+    data:
+      tts_broadcast: 1
+      tts_message: This is a test of the text-to-speech announcement system!
+  - service: script.tts_house
+    data:
+      tts_target: 1
+      tts_speaker: media_player.living_room
+      tts_message: This is Test number 2
+  - service: script.tts_house
+    data:
+      tts_chimes: 1
+  - service: script.tts_house
+    data:
+      tts_message: This is Test number 4
 test_pushbullet:
-  alias: "Test pushbullet notification"
+  alias: Test pushbullet notification
   sequence:
-    - service: notify.pb_notify
-      data:
-        title: Internet Speed
-        message: >-
-          According to my latest speed tests I am getting {{ states('sensor.spectrumdown') }} Mbps down 
-          and {{ states('sensor.spectrumup') }} Mbps up. 
-          {{ [ 'I suppose that is the best I can get in nowhere, Maine!',
-              'I will never be able to rule the world with that speed!',
-              'Bots in more civilized places are getting better speeds!',
-              'Fast or slow, thank you Spectrum.'
-              ] | random }}
-        target: 
-          - channel/damyBot
-#        data:
-#          file_url: http://10.10.10.141:8123/local/dave.png
-
+  - service: notify.pb_notify
+    data:
+      title: Internet Speed
+      message: "According to my latest speed tests I am getting {{ states('sensor.spectrumdown')\
+        \ }} Mbps down  and {{ states('sensor.spectrumup') }} Mbps up.  {{ [ 'I suppose\
+        \ that is the best I can get in nowhere, Maine!',\n    'I will never be able\
+        \ to rule the world with that speed!',\n    'Bots in more civilized places\
+        \ are getting better speeds!',\n    'Fast or slow, thank you Spectrum.'\n\
+        \    ] | random }}"
+      target:
+      - channel/damyBot
 test_smtp:
-  alias: "Test david_work notification"
+  alias: Test david_work notification
   sequence:
-    - service: notify.david_work
-      data:
-        title: Internet Speed
-        message: >-
-          According to my latest speed tests I am getting {{ states('sensor.spectrumdown') }} Mbps down 
-          and {{ states('sensor.spectrumup') }} Mbps up. 
-          {{ [ 'I suppose that is the best I can get in nowhere, Maine!',
-              'I will never be able to rule the world with that speed!',
-              'Bots in more civilized places are getting better speeds!',
-              'Fast or slow, thank you Spectrum.'
-              ] | random }}
-
+  - service: notify.david_work
+    data:
+      title: Internet Speed
+      message: "According to my latest speed tests I am getting {{ states('sensor.spectrumdown')\
+        \ }} Mbps down  and {{ states('sensor.spectrumup') }} Mbps up.  {{ [ 'I suppose\
+        \ that is the best I can get in nowhere, Maine!',\n    'I will never be able\
+        \ to rule the world with that speed!',\n    'Bots in more civilized places\
+        \ are getting better speeds!',\n    'Fast or slow, thank you Spectrum.'\n\
+        \    ] | random }}"
 set_default_lights:
-  alias: "Set all lights to scheduled default brightness"
+  alias: Set all lights to scheduled default brightness
   sequence:
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_dining_room_table_lamp
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_exterior_shop_light
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_exterior_driveway_light
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_living_room_table_lamps
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_living_room_corner_lamp
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_study_table_lamp
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_bedroom_table_lamp
-    - service: script.set_light_to_default
-      data:
-        mysensor: sensor.default_guest_bedroom_table_lamp
-
-# ###############################################################################
-# # Status Announcements
-# ###############################################################################
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_dining_room_table_lamp
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_exterior_shop_light
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_exterior_driveway_light
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_living_room_table_lamps
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_living_room_corner_lamp
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_study_table_lamp
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_bedroom_table_lamp
+  - service: script.set_light_to_default
+    data:
+      mysensor: sensor.default_guest_bedroom_table_lamp
 status_annc:
   sequence:
-    - service: script.sonos_new
-      data:
-        message: >-
-          {% macro greeting() %}
-            {% if now().strftime('%H')|int < 12%}
-              Good morning.
-            {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int < 17 %}
-              Good afternoon.
-            {% else %}
-              Good evening.
-            {% endif %}
-          {% endmacro %}
-
-          {% macro interruption() %}
-            {{ [
-                'Pardon me, ',
-                'Excuse me, ',
-                'I do not mean to interrupt, ',
-                'I hate to interrupt, ',
-                'I beg your pardon, ',
-                'I do not mean to intrude, ',
-                'I am sorry to interrupt, ',
-                'Just a quick heads up, ',
-                'Please forgive the intrusion, '
-                ] | random }}
-          {% endmacro %}
-
-          {% macro time_is() %}
-            It is {{ now().strftime("%I:%M %p") }}
-          {% endmacro %}
-
-          {% macro weather() %}
-            The temperature is currently {{ state_attr('weather.home', 'temperature') }} degrees.
-            The forecast for today is {{ state_attr('weather.home', 'forecast')[0].condition }} 
-            with a high of {{ state_attr('weather.home', 'forecast')[0].temperature }} degrees 
-            and a low of {{ state_attr('weather.home', 'forecast')[0].templow }} degrees.
-          {% endmacro %}
-
-          {%- macro mother_of_all_macros() -%}
-            {% if call_greeting == 1 %}
-              {{ greeting() }}
-            {% endif %}
-
-            {% if call_time_is == 1 %}
-              {{ time_is() }}
-            {% endif %}
-
-            {% if call_interruption == 1 %}
-              {{ interruption() }}
-            {% endif %}
-
-            {% if call_weather == 1 %}
-              {{ weather() }}
-            {% endif %}
-
-            {{ speech_message }}
-
-          {%- endmacro -%}
-          {{- mother_of_all_macros() -}}
-
+  - service: script.sonos_new
+    data:
+      message: "{% macro greeting() %}\n  {% if now().strftime('%H')|int < 12%}\n\
+        \    Good morning.\n  {% elif now().strftime('%H')|int >= 12 and now().strftime('%H')|int\
+        \ < 17 %}\n    Good afternoon.\n  {% else %}\n    Good evening.\n  {% endif\
+        \ %}\n{% endmacro %}\n{% macro interruption() %}\n  {{ [\n      'Pardon me,\
+        \ ',\n      'Excuse me, ',\n      'I do not mean to interrupt, ',\n      'I\
+        \ hate to interrupt, ',\n      'I beg your pardon, ',\n      'I do not mean\
+        \ to intrude, ',\n      'I am sorry to interrupt, ',\n      'Just a quick\
+        \ heads up, ',\n      'Please forgive the intrusion, '\n      ] | random }}\n\
+        {% endmacro %}\n{% macro time_is() %}\n  It is {{ now().strftime(\"%I:%M %p\"\
+        ) }}\n{% endmacro %}\n{% macro weather() %}\n  The temperature is currently\
+        \ {{ state_attr('weather.home', 'temperature') }} degrees.\n  The forecast\
+        \ for today is {{ state_attr('weather.home', 'forecast')[0].condition }} \n\
+        \  with a high of {{ state_attr('weather.home', 'forecast')[0].temperature\
+        \ }} degrees \n  and a low of {{ state_attr('weather.home', 'forecast')[0].templow\
+        \ }} degrees.\n{% endmacro %}\n{%- macro mother_of_all_macros() -%}\n  {%\
+        \ if call_greeting == 1 %}\n    {{ greeting() }}\n  {% endif %}\n\n  {% if\
+        \ call_time_is == 1 %}\n    {{ time_is() }}\n  {% endif %}\n\n  {% if call_interruption\
+        \ == 1 %}\n    {{ interruption() }}\n  {% endif %}\n\n  {% if call_weather\
+        \ == 1 %}\n    {{ weather() }}\n  {% endif %}\n\n  {{ speech_message }}\n\n\
+        {%- endmacro -%} {{- mother_of_all_macros() -}}"
 tts_house:
-  alias: "TTS House Controller"
+  alias: TTS House Controller
   mode: queued
   sequence:
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_broadcast == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-              - media_player.living_room
-        - service: media_player.media_pause
-          data:
-           entity_id: 
-              - media_player.bedroom
-              - media_player.study
-              - media_player.living_room
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-              - media_player.living_room
-        - service: sonos.join
-          data:
-            master: media_player.living_room
+  - condition: state
+    entity_id: binary_sensor.announce
+    state: 'on'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_broadcast == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
           entity_id:
-              - media_player.bedroom
-              - media_player.study
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.living_room
-            volume_level: 0.36
-        - service: media_player.play_media
-          data:
-            entity_id: 
-              - media_player.living_room
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: 
-              - media_player.living_room
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.living_room', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-              - media_player.living_room
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-              - media_player.living_room
-            with_group: yes
-        - delay: '00:00:02'
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_target == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: media_player.media_pause
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: sonos.unjoin
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-        - service: media_player.volume_set
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            volume_level: 0.40
-        - service: media_player.play_media
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state(tts_speaker, 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.restore
-          data_template:
-            entity_id: "{{ tts_speaker }}"
-            with_group: yes
-        - delay: '00:00:02'
-      - conditions:
-        - condition: template
-          value_template: "{{ tts_chimes == 1 }}"
-        sequence:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-        - service: sonos.join
-          data:
-            master: media_player.study
+          - media_player.bedroom
+          - media_player.study
+          - media_player.living_room
+      - service: media_player.media_pause
+        data:
           entity_id:
-              - media_player.bedroom
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.study
-            volume_level: 0.26
-        - service: media_player.play_media
-          data_template:
-            entity_id: 
-              - media_player.study
-            media_content_id: >
-               http://10.10.10.141:8123/local/sounds/GrandFatherChime{{now().strftime("%I")}}.wav
-            media_content_type: music
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.study', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.bedroom
-              - media_player.study
-            with_group: yes
-        - delay: '00:00:02'
-      default:
-        - service: sonos.snapshot
-          data:
-            entity_id: 
-              - media_player.study
-        - service: media_player.media_pause
-          data:
-           entity_id: 
-              - media_player.study
-        - service: sonos.unjoin
-          data:
-            entity_id: 
-             - media_player.study
-        - service: media_player.volume_set
-          data:
-            entity_id: 
-              - media_player.study
-            volume_level: 0.40
-        - service: media_player.play_media
-          data:
-            entity_id: 
-              - media_player.study
-            media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
-            media_content_type: music
-        - delay: '00:00:02'
-        - service: tts.google_say
-          data_template:
-            entity_id: 
-              - media_player.study
-            message: "{{ tts_message }}"
-        - delay:
-            seconds: 1
-        - wait_template: "{{ is_state('media_player.study', 'paused') }}"
-        - delay:
-            seconds: 1
-        - service: sonos.restore
-          data:
-            entity_id: 
-              - media_player.study
-            with_group: yes
-        - delay: '00:00:02'
+          - media_player.bedroom
+          - media_player.study
+          - media_player.living_room
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.living_room
+      - service: sonos.join
+        data:
+          master: media_player.living_room
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.living_room
+          volume_level: 0.36
+      - service: media_player.play_media
+        data:
+          entity_id:
+          - media_player.living_room
+          media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+          media_content_type: music
+      - delay: 00:00:02
+      - service: tts.google_say
+        data_template:
+          entity_id:
+          - media_player.living_room
+          message: '{{ tts_message }}'
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.living_room'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.living_room
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.living_room
+          with_group: true
+      - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_target == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: media_player.media_pause
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: sonos.unjoin
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+      - service: media_player.volume_set
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          volume_level: 0.4
+      - service: media_player.play_media
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+          media_content_type: music
+      - delay: 00:00:02
+      - service: tts.google_say
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          message: '{{ tts_message }}'
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(tts_speaker, ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.restore
+        data_template:
+          entity_id: '{{ tts_speaker }}'
+          with_group: true
+      - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_chimes == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+      - service: sonos.join
+        data:
+          master: media_player.study
+          entity_id:
+          - media_player.bedroom
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.study
+          volume_level: 0.26
+      - service: media_player.play_media
+        data_template:
+          entity_id:
+          - media_player.study
+          media_content_id: 'http://10.10.10.141:8123/local/sounds/GrandFatherChime{{now().strftime("%I")}}.wav
+
+            '
+          media_content_type: music
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.study'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: sonos.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          with_group: true
+      - delay: 00:00:02
+    default:
+    - service: sonos.snapshot
+      data:
+        entity_id:
+        - media_player.study
+    - service: media_player.media_pause
+      data:
+        entity_id:
+        - media_player.study
+    - service: sonos.unjoin
+      data:
+        entity_id:
+        - media_player.study
+    - service: media_player.volume_set
+      data:
+        entity_id:
+        - media_player.study
+        volume_level: 0.4
+    - service: media_player.play_media
+      data:
+        entity_id:
+        - media_player.study
+        media_content_id: http://10.10.10.141:8123/local/sounds/doorchime.wav
+        media_content_type: music
+    - delay: 00:00:02
+    - service: tts.google_say
+      data_template:
+        entity_id:
+        - media_player.study
+        message: '{{ tts_message }}'
+    - delay:
+        seconds: 1
+    - wait_template: '{{ is_state(''media_player.study'', ''paused'') }}'
+    - delay:
+        seconds: 1
+    - service: sonos.restore
+      data:
+        entity_id:
+        - media_player.study
+        with_group: true
+    - delay: 00:00:02
+  max: 10
