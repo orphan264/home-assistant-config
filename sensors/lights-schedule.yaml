@@ -90,3 +90,12 @@
         {% else %}
           0
         {% endif %}
+
+    default_guest_livingroom_floor_lamp:
+      friendly_name: "Default - Guest Living Room Floor Lamp"
+      value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('binary_sensor.guest_mode','on') %}
+          100
+        {% else %}
+          0
+        {% endif %}

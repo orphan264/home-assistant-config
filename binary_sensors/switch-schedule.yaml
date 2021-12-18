@@ -34,6 +34,8 @@
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') %}
           on
+        {% elif is_state('binary_sensor.guest_mode','on') %}
+          on
         {% else %}
           off
         {% endif %}
