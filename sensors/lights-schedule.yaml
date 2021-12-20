@@ -38,7 +38,7 @@
       friendly_name: "Default - Living Room Table Lamps"
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') and is_state('group.amy_or_david','home') %}
-          35
+          90
         {% else %}
           0
         {% endif %}
