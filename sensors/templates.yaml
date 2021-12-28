@@ -166,6 +166,16 @@
         {% endif %}
       unit_of_measurement: '%'
 
+    brightness_master_bedroom_table_lamp_amy:
+      friendly_name: "Brightness - Master Bedroom Table Lamp Amy"
+      value_template: >
+        {% if state_attr('light.master_bedroom_table_lamp_amy', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.master_bedroom_table_lamp_amy', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
     brightness_guest_livingroom_ceiling_light:
       friendly_name: "Brightness - Guest Livingroom Ceiling Light"
       value_template: >

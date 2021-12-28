@@ -77,6 +77,11 @@
           0
         {% endif %}
 
+    default_master_bedroom_table_lamp_amy:
+      friendly_name: "Default - Master Bedroom Table Lamp Amy"
+      value_template: >-
+          0
+
     default_guest_livingroom_ceiling_light:
       friendly_name: "Default - Guest Livingroom Ceiling Light"
       value_template: >-
