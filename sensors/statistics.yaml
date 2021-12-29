@@ -1,6 +1,7 @@
 - platform: statistics
   entity_id: sensor.spectrumup
   name: stats_spectrum_up
+  state_characteristic: mean
   sampling_size: 300
   max_age:
     days: 7
@@ -8,6 +9,7 @@
 - platform: statistics
   entity_id: sensor.spectrumdown
   name: stats_spectrum_down
+  state_characteristic: mean
   sampling_size: 300
   max_age:
     days: 7
@@ -15,6 +17,7 @@
 - platform: statistics
   entity_id: sensor.spectrumping
   name: stats_spectrum_ping
+  state_characteristic: mean
   sampling_size: 300
   max_age:
     days: 7
