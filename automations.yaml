@@ -75,6 +75,18 @@
 
         '
   mode: single
+- id: Process temperature changes for House
+  alias: Monitor - Scheduled Temperature for House
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - entity_id: sensor.house_heat_schedule
+    platform: state
+  condition: []
+  action:
+  - service: script.set_heat_to_schedule
+    data:
+      mysensor: sensor.house_heat_schedule
+  mode: single
 - id: Process Default Changes for Lights
   alias: Monitor - Default Lights
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -170,4 +182,16 @@
     data:
       entity_id: light.exterior_shop_light
       brightness_pct: 100
+  mode: single
+- id: Process motion detected in Laundry
+  alias: Monitor - Laundry motion
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.laundry_motion
+    to: 'on'
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.laundry_light
   mode: single

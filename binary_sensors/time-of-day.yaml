@@ -49,3 +49,23 @@
   name: "TOD Holiday Lights"
   after: '15:00'
   before: '21:45'
+
+- platform: tod
+  name: "TOD Heat Overnight"
+  after: '22:30'
+  before: '11:45'
+
+- platform: tod
+  name: "TOD Heat Lunch"
+  after: '11:45'
+  before: '13:15'
+
+- platform: tod
+  name: "TOD Heat Afternoon"
+  after: '13:15'
+  before: '16:45'
+
+- platform: tod
+  name: "TOD Heat Evening"
+  after: '16:45'
+  before: '22:30'

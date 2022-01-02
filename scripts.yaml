@@ -134,6 +134,18 @@ set_switch_to_default:
           name: '[damyBot] Set Default Switch State'
           message: 'Target: {{ mysensor | replace("binary_sensor.default_","switch.")
             }}'
+set_heat_to_schedule:
+  alias: Set Heat to Scheduled Temperature
+  mode: queued
+  sequence:
+  - service: climate.set_temperature
+    data_template:
+      entity_id: climate.centralite
+      temperature: '{{ states(mysensor) }}'
+  - service: logbook.log
+    data:
+      name: '[damyBot] Set Scheduled Temperature'
+      message: 'Temperature: {{ mysensor }}'
 tts_studio:
   alias: TTS Studio Controller
   mode: queued
