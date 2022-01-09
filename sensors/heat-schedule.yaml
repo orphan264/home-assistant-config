@@ -4,11 +4,11 @@
       friendly_name: "House Heat Schedule"
       value_template: >-
         {% if is_state('binary_sensor.tod_heat_lunch','on') %}
-          66
-        {% elif is_state('binary_sensor.tod_heat_afternoon','on') %}
           64
+        {% elif is_state('binary_sensor.tod_heat_afternoon','on') %}
+          62
         {% elif is_state('binary_sensor.tod_heat_evening','on') %}
-          68
+          66
         {% else %}
-          63
+          61
         {% endif %}

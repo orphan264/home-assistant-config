@@ -68,4 +68,4 @@
 - platform: tod
   name: "TOD Heat Evening"
   after: '16:45'
-  before: '22:30'
+  before: '21:45'
