@@ -29,7 +29,7 @@
       friendly_name: "Default - Exterior Driveway Light"
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') %}
-          12
+          15
         {% else %}
           0
         {% endif %}
@@ -58,7 +58,7 @@
         {% if is_state('binary_sensor.tod_evening','on') %}
           20
         {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
-          20
+          50
         {% else %}
           0
         {% endif %}
@@ -71,8 +71,8 @@
     default_bedroom_table_lamp:
       friendly_name: "Default - Bedroom Table Lamp"
       value_template: >-
-        {% if is_state('binary_sensor.tod_overnight','on') and is_state('group.amy_or_david','home') %}
-          18
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('person.david','home') %}
+          17
         {% else %}
           0
         {% endif %}
@@ -80,7 +80,11 @@
     default_master_bedroom_table_lamp_amy:
       friendly_name: "Default - Master Bedroom Table Lamp Amy"
       value_template: >-
+        {% if is_state('binary_sensor.tod_overnight','on') and is_state('person.amy','home') %}
+          17
+        {% else %}
           0
+        {% endif %}
 
     default_guest_livingroom_ceiling_light:
       friendly_name: "Default - Guest Livingroom Ceiling Light"
