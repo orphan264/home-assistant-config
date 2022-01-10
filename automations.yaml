@@ -109,6 +109,8 @@
     platform: state
   - entity_id: sensor.default_guest_livingroom_floor_lamp
     platform: state
+  - entity_id: sensor.default_master_bedroom_table_lamp_amy
+    platform: state
   condition: []
   action:
   - service: script.set_light_to_default
