@@ -87,6 +87,19 @@
     data:
       mysensor: sensor.house_heat_schedule
   mode: single
+- id: Alert when thermostat is turned off
+  alias: Monitor - Thermostat turned off
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+    - platform: template
+      value_template: '{{ state_attr(''climate.centralite'',''system_mode'') == ''off''  }}'
+  condition: []
+  action:
+  - service: script.tts_house
+    data_template:
+      tts_broadcast: 1
+      tts_message: "WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off"
+  mode: single
 - id: Process Default Changes for Lights
   alias: Monitor - Default Lights
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -124,9 +137,11 @@
   trigger:
   - entity_id: binary_sensor.default_studio_parlour_floor_lamp
     platform: state
-  - entity_id: binary_sensor.default_porch
+  - entity_id: binary_sensor.default_s31zb_porch
     platform: state
-  - entity_id: binary_sensor.default_christmas_tree
+  - entity_id: binary_sensor.default_s31zb_front_door
+    platform: state
+  - entity_id: binary_sensor.default_s31zb_living_room
     platform: state
   - entity_id: binary_sensor.default_christmas_tree_studio
     platform: state

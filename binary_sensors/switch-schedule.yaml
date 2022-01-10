@@ -16,11 +16,6 @@
       value_template: >-
           off
 
-    default_christmas_tree:
-      friendly_name: "Default - Christmas Tree"
-      value_template: >-
-          off
-
     default_christmas_tree_studio:
       friendly_name: "Default - Studio Christmas Tree"
       value_template: >-
@@ -31,7 +26,17 @@
       value_template: >-
         {{ is_state('binary_sensor.tod_evening','on') }}
 
-    default_porch:
-      friendly_name: "Default - Porch"
+    default_s31zb_porch:
+      friendly_name: "Default - S31ZB Porch"
       value_template: >-
         {{ is_state('binary_sensor.tod_evening','on') }}
+
+    default_s31zb_front_door:
+      friendly_name: "Default - S31ZB Front Door"
+      value_template: >-
+          off
+
+    default_s31zb_living_room:
+      friendly_name: "Default - S31ZB Living Room"
+      value_template: >-
+          off
