@@ -13,12 +13,12 @@
     entity_id: person.David
     state: home
   action:
-    - service: script.tts_house
-      data:
-        tts_target: 1
-        tts_speaker: media_player.bedroom
-        tts_message: Sleep mode activated. Good Night!
-    - delay: 00:00:05
+#    - service: script.tts_house
+#      data:
+#        tts_target: 1
+#        tts_speaker: media_player.bedroom
+#        tts_message: Sleep mode activated. Good Night!
+#    - delay: 00:00:05
     - service: script.sonos_sleep_music
   initial_state: true
   mode: single
