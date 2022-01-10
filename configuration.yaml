@@ -61,10 +61,6 @@ person:
     device_trackers:
       - device_tracker.life360_ken_howard
 
-wemo:
-  static:
-    - !secret ip_wemo
-
 notify:
   - name: pb_notify
     platform: pushbullet
