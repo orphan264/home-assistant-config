@@ -48,17 +48,17 @@
   password: !secret obihai_password
 
 - platform: mqtt
-  name: "Shelly HT Temp"
+  name: "Pantry Temperature"
   state_topic: "shellies/shellyht-E00AA7/sensor/temperature"
   device_class: temperature
   unit_of_measurement: '°F'
 - platform: mqtt
-  name: "Shelly HT Humidity"
+  name: "Pantry Humidity"
   state_topic: "shellies/shellyht-E00AA7/sensor/humidity"
   device_class: humidity
   unit_of_measurement: '%'
 - platform: mqtt
-  name: "Shelly HT Battery"
+  name: "Pantry Battery"
   state_topic: "shellies/shellyht-E00AA7/sensor/battery"
   device_class: battery
   unit_of_measurement: '%'

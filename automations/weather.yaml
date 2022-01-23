@@ -27,5 +27,5 @@
   - service: input_datetime.set_datetime
     entity_id: input_datetime.last_snow
     data_template:
-      datetime: '{{ now().strftime(''%Y-%m-%d %H:%M:%S'') }}'
+      datetime: '{{ as_local(now().strftime(''%Y-%m-%d %H:%M:%S'')) }}'
   mode: single
