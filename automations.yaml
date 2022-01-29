@@ -87,19 +87,19 @@
     data:
       mysensor: sensor.house_heat_schedule
   mode: single
-#- id: Alert when thermostat is turned off
-#  alias: Monitor - Thermostat turned off
-#  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-#  trigger:
-#    - platform: template
-#      value_template: '{{ state_attr(''climate.centralite'',''system_mode'') == ''off''  }}'
-#  condition: []
-#  action:
-#  - service: script.tts_house
-#    data_template:
-#      tts_broadcast: 1
-#      tts_message: "WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off"
-#  mode: single
+- id: Alert when thermostat is turned off
+  alias: Monitor - Thermostat turned off
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+    - platform: template
+      value_template: '{{ state_attr(''climate.house_thermostat_control'',''system_mode'') == ''[0]/off''  }}'
+  condition: []
+  action:
+  - service: script.tts_house
+    data_template:
+      tts_broadcast: 1
+      tts_message: "WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off"
+  mode: single
 - id: Process Default Changes for Lights
   alias: Monitor - Default Lights
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -137,11 +137,11 @@
   trigger:
   - entity_id: binary_sensor.default_studio_parlour_floor_lamp
     platform: state
-  - entity_id: binary_sensor.default_s31zb_porch
+  - entity_id: binary_sensor.default_porch_outlet_control
     platform: state
-  - entity_id: binary_sensor.default_s31zb_front_door
+  - entity_id: binary_sensor.default_upstairs_outlet_control
     platform: state
-  - entity_id: binary_sensor.default_s31zb_living_room
+  - entity_id: binary_sensor.default_living_room_outlet_control
     platform: state
   - entity_id: binary_sensor.default_christmas_tree_studio
     platform: state
@@ -205,7 +205,7 @@
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: state
-    entity_id: binary_sensor.laundry_motion
+    entity_id: binary_sensor.laundry_motion_zone
     to: 'on'
   action:
   - service: switch.turn_on

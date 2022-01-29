@@ -51,9 +51,9 @@ arrive_home_anyone:
   - service: script.set_light_to_default
     data:
       mysensor: sensor.default_bedroom_table_lamp
-  - service: script.set_switch_to_default
-    data:
-      mysensor: sensor.default_christmas_tree
+#  - service: script.set_switch_to_default
+#    data:
+#      mysensor: sensor.default_christmas_tree
 arrive_home_amy:
   alias: Amy Arrives Home
   sequence:
@@ -140,7 +140,7 @@ set_heat_to_schedule:
   sequence:
   - service: climate.set_temperature
     data_template:
-      entity_id: climate.centralite
+      entity_id: climate.house_thermostat_control
       temperature: '{{ states(mysensor) }}'
   - service: logbook.log
     data:
