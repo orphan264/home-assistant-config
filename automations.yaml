@@ -189,7 +189,7 @@
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: state
-    entity_id: binary_sensor.shop_door
+    entity_id: binary_sensor.shop_door_zone
   condition:
   - condition: state
     entity_id: binary_sensor.tod_overnight

@@ -53,13 +53,13 @@
     house_secure:
       friendly_name: "House is secure"
       value_template: >-
-        {{ is_state('binary_sensor.shop_door','off') }}
+        {{ is_state('binary_sensor.shop_door_zone','off') }}
       icon_template: >-
           mdi:lock-check
 
     house_sleeping:
       friendly_name: "House is sleeping"
       value_template: >-
-        {{ is_state('binary_sensor.shop_door','off') }}
+        {{ is_state('binary_sensor.shop_door_zone','off') }}
       icon_template: >-
           mdi:sleep

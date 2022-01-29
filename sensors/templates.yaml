@@ -9,7 +9,7 @@
 
     shop_door_last_opened:
       value_template: >
-          {{ states.binary_sensor.shop_door.last_changed }}
+          {{ states.binary_sensor.shop_door_zone.last_changed }}
       device_class: timestamp
 
     plex_livingroom_playing:
