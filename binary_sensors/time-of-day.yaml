@@ -57,12 +57,12 @@
 
 - platform: tod
   name: "TOD Heat Lunch"
-  after: '11:45'
-  before: '13:15'
+  after: '11:50'
+  before: '12:50'
 
 - platform: tod
   name: "TOD Heat Afternoon"
-  after: '13:15'
+  after: '12:50'
   before: '16:45'
 
 - platform: tod
