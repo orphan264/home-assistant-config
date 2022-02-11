@@ -144,8 +144,8 @@ set_heat_to_schedule:
       temperature: '{{ states(mysensor) }}'
   - service: logbook.log
     data:
-      name: '[damyBot] Set Scheduled Temperature'
-      message: 'Temperature: {{ mysensor }}'
+      name: 'Set Heat to Schedule'
+      message: 'The House thermostat has been set to {{ states(mysensor) }} degrees'
 tts_studio:
   alias: TTS Studio Controller
   mode: queued
