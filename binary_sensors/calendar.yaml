@@ -2,10 +2,10 @@
   name: Workday_David
   country: US
   add_holidays: 
-    - '2021-11-26'
-    - '2021-12-24'
-    - '2021-12-27'
-    - '2021-12-31'
+    - '2022-04-29'
+    - '2022-11-25'
+    - '2022-12-23'
+    - '2022-12-30'
 
 - platform: workday
   name: Workday_Amy
