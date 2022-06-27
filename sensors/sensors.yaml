@@ -47,53 +47,53 @@
   username: !secret obihai_username
   password: !secret obihai_password
 
-- platform: mqtt
-  name: "Pantry Temperature"
-  state_topic: "shellies/shellyht-E00AA7/sensor/temperature"
-  device_class: temperature
-  unit_of_measurement: '°F'
-- platform: mqtt
-  name: "Pantry Humidity"
-  state_topic: "shellies/shellyht-E00AA7/sensor/humidity"
-  device_class: humidity
-  unit_of_measurement: '%'
-- platform: mqtt
-  name: "Pantry Battery"
-  state_topic: "shellies/shellyht-E00AA7/sensor/battery"
-  device_class: battery
-  unit_of_measurement: '%'
+#- platform: mqtt
+#  name: "Pantry Temperature"
+#  state_topic: "shellies/shellyht-E00AA7/sensor/temperature"
+#  device_class: temperature
+#  unit_of_measurement: '°F'
+#- platform: mqtt
+#  name: "Pantry Humidity"
+#  state_topic: "shellies/shellyht-E00AA7/sensor/humidity"
+#  device_class: humidity
+#  unit_of_measurement: '%'
+#- platform: mqtt
+#  name: "Pantry Battery"
+#  state_topic: "shellies/shellyht-E00AA7/sensor/battery"
+#  device_class: battery
+#  unit_of_measurement: '%'
 
-- platform: mqtt
-  name: "Shelly HT002 Temp"
-  state_topic: "shellies/shellyht-957035/sensor/temperature"
-  device_class: temperature
-  unit_of_measurement: '°F'
-- platform: mqtt
-  name: "Shelly HT002 Humidity"
-  state_topic: "shellies/shellyht-957035/sensor/humidity"
-  device_class: humidity
-  unit_of_measurement: '%'
-- platform: mqtt
-  name: "Shelly HT002 Battery"
-  state_topic: "shellies/shellyht-957035/sensor/battery"
-  device_class: battery
-  unit_of_measurement: '%'
+#- platform: mqtt
+#  name: "Shelly HT002 Temp"
+#  state_topic: "shellies/shellyht-957035/sensor/temperature"
+#  device_class: temperature
+#  unit_of_measurement: '°F'
+#- platform: mqtt
+#  name: "Shelly HT002 Humidity"
+#  state_topic: "shellies/shellyht-957035/sensor/humidity"
+#  device_class: humidity
+#  unit_of_measurement: '%'
+#- platform: mqtt
+#  name: "Shelly HT002 Battery"
+#  state_topic: "shellies/shellyht-957035/sensor/battery"
+#  device_class: battery
+#  unit_of_measurement: '%'
 
-- platform: mqtt
-  name: "SpectrumPing"
-  state_topic: "modi/speedtest/ping"
-  value_template: "{{ value | float }}"
-  unit_of_measurement: 'ms'
-- platform: mqtt
-  name: "SpectrumDown"
-  state_topic: "modi/speedtest/download"
-  value_template: "{{ value | float }}"
-  unit_of_measurement: 'Mbps'
-- platform: mqtt
-  name: "SpectrumUp"
-  state_topic: "modi/speedtest/upload"
-  value_template: "{{ value | float }}"
-  unit_of_measurement: 'Mbps'
+#- platform: mqtt
+#  name: "SpectrumPing"
+#  state_topic: "modi/speedtest/ping"
+#  value_template: "{{ value | float }}"
+#  unit_of_measurement: 'ms'
+#- platform: mqtt
+#  name: "SpectrumDown"
+#  state_topic: "modi/speedtest/download"
+#  value_template: "{{ value | float }}"
+#  unit_of_measurement: 'Mbps'
+#- platform: mqtt
+#  name: "SpectrumUp"
+#  state_topic: "modi/speedtest/upload"
+#  value_template: "{{ value | float }}"
+#  unit_of_measurement: 'Mbps'
 
 #- platform: snmp
 #  host: !secret ip_modi

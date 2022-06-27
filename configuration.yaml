@@ -21,6 +21,7 @@ config:
 discovery:
 history:
 #energy:
+media_source:
 
 logbook:
   include:
@@ -94,6 +95,39 @@ lutron_caseta:
   keyfile: /ssl/lutron/caseta.key
   certfile: /ssl/lutron/caseta.crt
   ca_certs: /ssl/lutron/caseta-bridge.crt
+
+mqtt:
+  sensor:
+    - name: "Pantry Temperature"
+      state_topic: "shellies/shellyht-E00AA7/sensor/temperature"
+      device_class: temperature
+      unit_of_measurement: '°F'
+    - name: "Pantry Humidity"
+      state_topic: "shellies/shellyht-E00AA7/sensor/humidity"
+      device_class: humidity
+      unit_of_measurement: '%'
+
+    - name: "Shelly HT002 Temp"
+      state_topic: "shellies/shellyht-957035/sensor/temperature"
+      device_class: temperature
+      unit_of_measurement: '°F'
+    - name: "Shelly HT002 Humidity"
+      state_topic: "shellies/shellyht-957035/sensor/humidity"
+      device_class: humidity
+      unit_of_measurement: '%'
+
+    - name: "SpectrumPing"
+      state_topic: "modi/speedtest/ping"
+      value_template: "{{ value | float }}"
+      unit_of_measurement: 'ms'
+    - name: "SpectrumDown"
+      state_topic: "modi/speedtest/download"
+      value_template: "{{ value | float }}"
+      unit_of_measurement: 'Mbps'
+    - name: "SpectrumUp"
+      state_topic: "modi/speedtest/upload"
+      value_template: "{{ value | float }}"
+      unit_of_measurement: 'Mbps'
 
 #google:
 #  client_id: !secret google_client_id
