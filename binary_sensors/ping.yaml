@@ -20,5 +20,5 @@
   host: roku-guest.damy.us
 - platform: ping
   host: roomba.damy.us
-- platform: ping
-  host: harmony.damy.us
+#- platform: ping
+#  host: harmony.damy.us
