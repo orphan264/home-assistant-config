@@ -1,7 +1,7 @@
 sonos_reset:
   alias: Reset Sonos
   sequence:
-  - service: sonos.unjoin
+  - service: media_player.unjoin
     data_template:
       entity_id: '{{ sonos_entity }}'
   - service: sonos.clear_sleep_timer
@@ -16,7 +16,7 @@ sonos_reset:
 sonos_sleep_music:
   alias: Play music for sleeping
   sequence:
-  - service: sonos.unjoin
+  - service: media_player.unjoin
     data:
       entity_id: media_player.bedroom
   - service: media_player.media_stop
@@ -168,12 +168,12 @@ tts_studio:
           entity_id:
           - media_player.office
           - media_player.painting_room
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.office
           - media_player.painting_room
-      - service: sonos.join
+      - service: media_player.join
         data:
           master: media_player.office
           entity_id:
@@ -200,7 +200,7 @@ tts_studio:
       - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
       - delay:
           seconds: 1
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.office
@@ -222,7 +222,7 @@ tts_studio:
       - service: media_player.media_pause
         data_template:
           entity_id: '{{ tts_speaker }}'
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data_template:
           entity_id: '{{ tts_speaker }}'
       - service: media_player.volume_set
@@ -258,12 +258,12 @@ tts_studio:
           entity_id:
           - media_player.office
           - media_player.painting_room
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.office
           - media_player.painting_room
-      - service: sonos.join
+      - service: media_player.join
         data:
           master: media_player.office
           entity_id:
@@ -286,7 +286,7 @@ tts_studio:
       - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
       - delay:
           seconds: 1
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.office
@@ -307,7 +307,7 @@ tts_studio:
       data:
         entity_id:
         - media_player.office
-    - service: sonos.unjoin
+    - service: media_player.unjoin
       data:
         entity_id:
         - media_player.office
@@ -477,13 +477,13 @@ tts_house:
           - media_player.bedroom
           - media_player.study
           - media_player.living_room
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.bedroom
           - media_player.study
           - media_player.living_room
-      - service: sonos.join
+      - service: media_player.join
         data:
           master: media_player.living_room
           entity_id:
@@ -511,7 +511,7 @@ tts_house:
       - wait_template: '{{ is_state(''media_player.living_room'', ''paused'') }}'
       - delay:
           seconds: 1
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.bedroom
@@ -535,7 +535,7 @@ tts_house:
       - service: media_player.media_pause
         data_template:
           entity_id: '{{ tts_speaker }}'
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data_template:
           entity_id: '{{ tts_speaker }}'
       - service: media_player.volume_set
@@ -571,12 +571,12 @@ tts_house:
           entity_id:
           - media_player.bedroom
           - media_player.study
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.bedroom
           - media_player.study
-      - service: sonos.join
+      - service: media_player.join
         data:
           master: media_player.study
           entity_id:
@@ -599,7 +599,7 @@ tts_house:
       - wait_template: '{{ is_state(''media_player.study'', ''paused'') }}'
       - delay:
           seconds: 1
-      - service: sonos.unjoin
+      - service: media_player.unjoin
         data:
           entity_id:
           - media_player.bedroom
@@ -620,7 +620,7 @@ tts_house:
       data:
         entity_id:
         - media_player.study
-    - service: sonos.unjoin
+    - service: media_player.unjoin
       data:
         entity_id:
         - media_player.study
