@@ -49,4 +49,8 @@
         tts_broadcast: 1
         tts_message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than
           {{ trigger.id }} away and heading home!'
+    - service: notify.persistent_notification
+      data_template:
+        message: '{{trigger.to_state.object_id[:-5] | capitalize}} is less than {{ trigger.id }} away and heading home!'
+        title: '{{trigger.to_state.object_id[:-5] | capitalize}} is heading home!'
   mode: parallel

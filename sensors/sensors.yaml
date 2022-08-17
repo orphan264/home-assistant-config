@@ -10,10 +10,6 @@
   monitored_conditions:
     - type
 
-#- platform: version
-#  name: Installed
-#  source: local
-
 #- platform: github
 #  access_token: !secret github_access_token
 #  repositories:

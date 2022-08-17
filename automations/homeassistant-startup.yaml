@@ -6,5 +6,5 @@
   action:
     - service: notify.persistent_notification
       data:
-        message: Home Assistant version {{ states('sensor.installed') }} has started and damyBot is ready!
-        title: "[damyBot] HomeAssistant has Started"
+        message: Home Assistant version {{ states('sensor.installed') }} has started!
+        title: "HomeAssistant has Started"

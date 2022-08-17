@@ -22,7 +22,7 @@
 
     battery_david:
       friendly_name: "David's Battery"
-      value_template: "{{ state_attr('device_tracker.life360_david', 'battery') }}"
+      value_template: "{{ state_attr('device_tracker.life360_david', 'battery_level') }}"
       unit_of_measurement: '%'
       device_class: battery
 
@@ -32,7 +32,7 @@
 
     battery_ken:
       friendly_name: "Ken's Battery"
-      value_template: "{{ state_attr('device_tracker.life360_ken_howard', 'battery') }}"
+      value_template: "{{ state_attr('device_tracker.life360_ken_howard', 'battery_level') }}"
       unit_of_measurement: '%'
       device_class: battery
 
@@ -48,7 +48,7 @@
 
     battery_amy:
       friendly_name: Amy's Battery
-      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery') }}"
+      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery_level') }}"
       unit_of_measurement: '%'
       device_class: battery
 

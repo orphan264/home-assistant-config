@@ -85,10 +85,10 @@ notify:
     sender_name: !secret email_smtp_sender_name
     recipient: !secret email_bruce_work
   
-life360:
-  accounts:
-    - username: !secret life360_username
-      password: !secret life360_password
+#life360:
+#  accounts:
+#    - username: !secret life360_username
+#      password: !secret life360_password
 
 lutron_caseta:
   host: !secret ip_lutron_hub
