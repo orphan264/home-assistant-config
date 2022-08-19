@@ -140,7 +140,7 @@ set_heat_to_schedule:
   sequence:
   - service: climate.set_temperature
     data_template:
-      entity_id: climate.house_thermostat_control
+      entity_id: climate.house_thermostat
       temperature: '{{ states(mysensor) }}'
   - service: logbook.log
     data:

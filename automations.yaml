@@ -189,7 +189,7 @@
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: state
-    entity_id: binary_sensor.shop_door_zone
+    entity_id: binary_sensor.basement_door_contact
   condition:
   - condition: state
     entity_id: binary_sensor.tod_overnight
@@ -205,7 +205,7 @@
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: state
-    entity_id: binary_sensor.laundry_motion_zone
+    entity_id: binary_sensor.laundry_motion_occupancy
     to: 'on'
   action:
   - service: switch.turn_on
