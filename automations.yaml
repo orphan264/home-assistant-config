@@ -137,11 +137,11 @@
   trigger:
   - entity_id: binary_sensor.default_studio_parlour_floor_lamp
     platform: state
-  - entity_id: binary_sensor.default_porch_outlet_control
+  - entity_id: binary_sensor.default_porch_outlet
     platform: state
-  - entity_id: binary_sensor.default_upstairs_outlet_control
+  - entity_id: binary_sensor.default_upstairs_outlet
     platform: state
-  - entity_id: binary_sensor.default_living_room_outlet_control
+  - entity_id: binary_sensor.default_basement_outlet
     platform: state
   - entity_id: binary_sensor.default_christmas_tree_studio
     platform: state

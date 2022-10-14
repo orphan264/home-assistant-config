@@ -34,24 +34,10 @@
     default_upstairs_outlet:
       friendly_name: "Default - Upstairs Outlet"
       value_template: >-
-        {% if is_state('binary_sensor.tod_overnight','on')  %}
-          on
-        {% elif is_state('binary_sensor.tod_evening','on') %}
-          on
-        {% else %}
           off
-        {% endif %}
 
-    default_living_room_outlet_control:
-      friendly_name: "Default - Living Room Outlet Control"
+    default_basement_outlet:
+      friendly_name: "Default - Basement Outlet"
       value_template: >-
-        {% if is_state('light.living_room_table_lamps','on')  %}
           off
-        {% elif is_state('binary_sensor.tod_overnight','on')  %}
-          on
-        {% elif is_state('binary_sensor.tod_evening','on') %}
-          on
-        {% else %}
-          off
-        {% endif %}
 
