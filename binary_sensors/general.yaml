@@ -63,3 +63,8 @@
         {{ is_state('binary_sensor.basement_door_contact','off') }}
       icon_template: >-
           mdi:sleep
+
+#    house_furnace_activity:
+#      friendly_name: "House furnace activity"
+#      value_template: >
+#          {{ is_state(state_attr('climate.house_thermostat', 'hvac_action'),'heating') }}

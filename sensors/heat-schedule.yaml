@@ -4,13 +4,13 @@
       friendly_name: "House Heat Schedule"
       value_template: >-
         {% if is_state('binary_sensor.tod_heat_lunch','on') and is_state('group.amy_or_david','home') %}
-          64
+          60
         {% elif is_state('binary_sensor.tod_heat_afternoon','on') and is_state('group.amy_or_david','home') %}
-          62
+          60
         {% elif is_state('binary_sensor.tod_heat_evening','on') and is_state('group.amy_or_david','home') %}
-          66
-        {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
           62
+        {% elif is_state('binary_sensor.tod_amy_workday_morning','on') and is_state('binary_sensor.workday_amy','on') and is_state('person.amy','home') %}
+          60
         {% else %}
-          61
+          60
         {% endif %}

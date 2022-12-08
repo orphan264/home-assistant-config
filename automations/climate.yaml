@@ -1,0 +1,25 @@
+- id: "Process temperature changes for House"
+  alias: Monitor - Scheduled Temperature for House
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - entity_id: sensor.house_heat_schedule
+    platform: state
+  condition: []
+  action:
+  - service: script.set_heat_to_schedule
+    data:
+      mysensor: sensor.house_heat_schedule
+  mode: single
+- id: "Alert when thermostat is turned off"
+  alias: Monitor - Thermostat turned off
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+    - platform: template
+      value_template: '{{ state_attr(''climate.house_thermostat'',''system_mode'') == ''[0]/off''  }}'
+  condition: []
+  action:
+  - service: script.tts_house
+    data_template:
+      tts_broadcast: 1
+      tts_message: "WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off"
+  mode: single

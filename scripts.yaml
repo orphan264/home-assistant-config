@@ -139,9 +139,11 @@ set_heat_to_schedule:
   mode: queued
   sequence:
   - service: climate.set_temperature
-    data_template:
+    target: 
       entity_id: climate.house_thermostat
-      temperature: '{{ states(mysensor) }}'
+    data:
+      target_temp_low: '{{ states(mysensor) }}'
+      target_temp_high: 76
   - service: logbook.log
     data:
       name: 'Set Heat to Schedule'

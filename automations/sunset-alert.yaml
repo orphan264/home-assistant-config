@@ -1,0 +1,25 @@
+- id: "Sunset Alert"
+  alias: Sunset minus thirty minutes
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -00:30:15
+  action:
+  - service: script.tts_house
+    data_template:
+      tts_broadcast: 1
+      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
+        I will take care of the lights!", "Activating evening lights! Don''t stay
+        up too late!", "That''s OK, You relax, I will take care of the lights." ]
+        |random }}'
+  - service: script.tts_studio
+    data_template:
+      tts_broadcast: 1
+      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
+        I will take care of the lights!", "Activating evening lights! Don''t stay
+        up too late!", "That''s OK, You relax, I will take care of the lights." ]
+        |random }}'
+  mode: single

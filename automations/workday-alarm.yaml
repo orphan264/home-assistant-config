@@ -1,0 +1,34 @@
+- id: "Workday Alarms"
+  alias: David - Workday Alarm
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: template
+    value_template: '{{ states(''sensor.time'') == (state_attr(''input_datetime.alarm_time_david'',
+      ''timestamp'') | int | timestamp_custom(''%H:%M'', False)) }}'
+  condition:
+  - condition: state
+    entity_id: person.david
+    state: home
+  - condition: state
+    entity_id: binary_sensor.workday_david
+    state: 'on'
+  action:
+  - service: script.tts_house
+    data:
+      tts_target: 1
+      tts_speaker: media_player.bedroom
+      tts_message: Good Morning David! Time to wake up!
+  - delay: 00:00:10
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.bedroom
+      volume_level: 0.18
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.bedroom
+      source: Summer Hits of the 80s Radio
+  - delay: 00:50:00
+  - service: media_player.media_stop
+    data:
+      entity_id: media_player.bedroom
+  mode: single

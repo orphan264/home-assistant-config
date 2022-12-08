@@ -28,7 +28,7 @@ logbook:
     domains:
       - logbook
      
-map:
+#map:
 sun:
 system_health:
 mobile_app:
@@ -57,6 +57,7 @@ person:
     user_id: !secret home_assistant_user_account_id_david
     device_trackers:
       - device_tracker.life360_david
+      - device_tracker.vs988
   - name: Ken
     id: kh123
     device_trackers:
@@ -85,11 +86,6 @@ notify:
     sender_name: !secret email_smtp_sender_name
     recipient: !secret email_bruce_work
   
-#life360:
-#  accounts:
-#    - username: !secret life360_username
-#      password: !secret life360_password
-
 lutron_caseta:
   host: !secret ip_lutron_hub
   keyfile: /ssl/lutron/caseta.key
@@ -98,20 +94,20 @@ lutron_caseta:
 
 mqtt:
   sensor:
-    - name: "Pantry Temperature"
+    - name: "Guest Livingroom Env Temperature"
       state_topic: "shellies/shellyht-E00AA7/sensor/temperature"
       device_class: temperature
       unit_of_measurement: '°F'
-    - name: "Pantry Humidity"
+    - name: "Guest Livingroom Env Humidity"
       state_topic: "shellies/shellyht-E00AA7/sensor/humidity"
       device_class: humidity
       unit_of_measurement: '%'
 
-    - name: "Shelly HT002 Temp"
+    - name: "Office Env Temperature"
       state_topic: "shellies/shellyht-957035/sensor/temperature"
       device_class: temperature
       unit_of_measurement: '°F'
-    - name: "Shelly HT002 Humidity"
+    - name: "Office Env Humidity"
       state_topic: "shellies/shellyht-957035/sensor/humidity"
       device_class: humidity
       unit_of_measurement: '%'

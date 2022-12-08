@@ -186,6 +186,16 @@
         {% endif %}
       unit_of_measurement: '%'
 
+    brightness_guest_livingroom_floor_lamp:
+      friendly_name: "Brightness - Guest Livingroom Floor Lamp"
+      value_template: >
+        {% if state_attr('light.guest_livingroom_floor_lamp', 'brightness')|string != 'None' %}
+          {{ ((state_attr('light.guest_livingroom_floor_lamp', 'brightness')/255)*100 | int ) | round(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: '%'
+
     brightness_guest_bedroom_table_lamp:
       friendly_name: "Brightness - Guest Bedroom Table Lamp"
       value_template: >
@@ -217,7 +227,7 @@
         automation: "{{ states.automation | count }}"
         binary_sensor: "{{ states.binary_sensor | count }}"
 #        camera: "{{ states.camera | count }}"
-#        climate: "{{ states.climate | count }}"
+        climate: "{{ states.climate | count }}"
         device_tracker: "{{ states.device_tracker | count }}"
         light: "{{ states.light | count }}"
         media_player: "{{ states.media_player | count }}"
@@ -226,12 +236,28 @@
         sensor: "{{ states.sensor | count }}"
         switch: "{{ states.switch | count }}"
 
-
     temperature_accuweather:
       friendly_name: "Temperature - Outside"
       value_template: >
           {{ state_attr('weather.home', 'temperature') }}
       unit_of_measurement: '°F'
+
+    house_temperature_target:
+      friendly_name: "House Temperature target"
+      value_template: >
+          {{ state_attr('climate.house_thermostat', 'target_temp_low') }}
+      unit_of_measurement: '°F'
+
+    house_temperature:
+      friendly_name: "House Temperature"
+      value_template: >
+          {{ state_attr('climate.house_thermostat', 'current_temperature') }}
+      unit_of_measurement: '°F'
+
+    house_furnace_action:
+      friendly_name: "House furnace action"
+      value_template: >
+          {{ state_attr('climate.house_thermostat', 'hvac_action') }}
 
     doors_open_count:
       friendly_name: Number of doors open

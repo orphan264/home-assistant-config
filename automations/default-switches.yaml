@@ -1,0 +1,25 @@
+- id: Process Default Changes for Switches
+  alias: Monitor - Default Switches
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - entity_id: binary_sensor.default_studio_parlour_floor_lamp
+    platform: state
+  - entity_id: binary_sensor.default_porch_outlet
+    platform: state
+  - entity_id: binary_sensor.default_upstairs_outlet
+    platform: state
+  - entity_id: binary_sensor.default_basement_outlet
+    platform: state
+  - entity_id: binary_sensor.default_christmas_tree_studio
+    platform: state
+  - entity_id: binary_sensor.default_holiday_lights_1
+    platform: state
+  - entity_id: binary_sensor.default_holiday_lights_2
+    platform: state
+  condition: []
+  action:
+  - service: script.set_switch_to_default
+    data:
+      mysensor: '{{trigger.to_state.entity_id }}'
+  mode: parallel
+  max: 10

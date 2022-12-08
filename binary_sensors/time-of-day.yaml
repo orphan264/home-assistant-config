@@ -31,7 +31,7 @@
 
 - platform: tod
   name: "TOD Amy Workday Morning"
-  after: "04:45"
+  after: "04:30"
   after_offset: "+01:00:00"
   before: sunrise
   before_offset: "+00:20:00"

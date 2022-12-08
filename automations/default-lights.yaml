@@ -1,0 +1,31 @@
+- id: Process Default Changes for Lights
+  alias: Monitor - Default Lights
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - entity_id: sensor.default_dining_room_table_lamp
+    platform: state
+  - entity_id: sensor.default_exterior_shop_light
+    platform: state
+  - entity_id: sensor.default_exterior_driveway_light
+    platform: state
+  - entity_id: sensor.default_living_room_table_lamps
+    platform: state
+  - entity_id: sensor.default_living_room_corner_lamp
+    platform: state
+  - entity_id: sensor.default_study_table_lamp
+    platform: state
+  - entity_id: sensor.default_bedroom_table_lamp
+    platform: state
+  - entity_id: sensor.default_guest_bedroom_table_lamp
+    platform: state
+  - entity_id: sensor.default_guest_livingroom_floor_lamp
+    platform: state
+  - entity_id: sensor.default_master_bedroom_table_lamp_amy
+    platform: state
+  condition: []
+  action:
+  - service: script.set_light_to_default
+    data:
+      mysensor: '{{trigger.to_state.entity_id }}'
+  mode: parallel
+  max: 10
