@@ -15,7 +15,7 @@
       }}'
     id: Laundry
   - platform: template
-    value_template: '{{ states(''binary_sensor.default_porch_ceiling_light'') != states(''sensor.brightness_porch_ceiling_light'')
+    value_template: '{{ states(''sensor.default_porch_ceiling_light'') != states(''sensor.brightness_porch_ceiling_light'')
       }}'
     id: Porch
   condition: []
