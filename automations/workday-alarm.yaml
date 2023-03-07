@@ -18,7 +18,7 @@
       tts_target: 1
       tts_speaker: media_player.bedroom
       tts_message: Good Morning David! Time to wake up!
-  - delay: 00:00:10
+  - delay: 00:00:05
   - service: media_player.volume_set
     data:
       entity_id: media_player.bedroom

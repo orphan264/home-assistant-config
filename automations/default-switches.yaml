@@ -6,7 +6,7 @@
     platform: state
   - entity_id: binary_sensor.default_porch_outlet
     platform: state
-  - entity_id: binary_sensor.default_upstairs_outlet
+  - entity_id: binary_sensor.default_livingroom_outlet
     platform: state
   - entity_id: binary_sensor.default_basement_outlet
     platform: state

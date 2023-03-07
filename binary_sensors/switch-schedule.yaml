@@ -29,19 +29,19 @@
     default_holiday_lights_2:
       friendly_name: "Default - Holiday Lights 2"
       value_template: >-
-        {{ is_state('binary_sensor.tod_overnight','on') }}
+        off
 
     default_porch_outlet:
       friendly_name: "Default - Porch Outlet"
       value_template: >-
         {{ is_state('binary_sensor.tod_evening','on') }}
 
-    default_upstairs_outlet:
-      friendly_name: "Default - Upstairs Outlet"
+    default_livingroom_outlet:
+      friendly_name: "Default - Livingroom Outlet"
       value_template: >-
-          off
+        {{ is_state('binary_sensor.tod_evening','on') }}
 
     default_basement_outlet:
       friendly_name: "Default - Basement Outlet"
       value_template: >-
-          off
+        off

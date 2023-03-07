@@ -4,3 +4,21 @@ state_washingmachine:
     - Ready
     - Washing
   icon: mdi:tumble-dryer
+
+david_activity:
+    name: David
+    options:
+      - Still
+      - Driving
+      - Walking
+      - Sleeping
+    initial: Still
+
+amy_activity:
+    name: Amy
+    options:
+      - Still
+      - Driving
+      - Walking
+      - Sleeping
+    initial: Still

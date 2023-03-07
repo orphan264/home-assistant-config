@@ -2,11 +2,13 @@
   sensors:
     default_dining_room_ceiling_light:
       friendly_name: "Default - Dining Room Ceiling Light"
+      icon_template: mdi:calendar
       value_template: >-
           0
 
     default_dining_room_table_lamp:
       friendly_name: "Default - Dining Room Table Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') %}
           20
@@ -18,6 +20,7 @@
 
     default_exterior_shop_light:
       friendly_name: "Default - Exterior Shop Light"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') %}
           20
@@ -27,6 +30,7 @@
 
     default_exterior_driveway_light:
       friendly_name: "Default - Exterior Driveway Light"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') %}
           15
@@ -36,6 +40,7 @@
 
     default_living_room_table_lamps:
       friendly_name: "Default - Living Room Table Lamps"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') and is_state('group.amy_or_david','home') %}
           55
@@ -45,6 +50,7 @@
 
     default_study_table_lamp:
       friendly_name: "Default - Study Table Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') %}
           50
@@ -54,6 +60,7 @@
 
     default_living_room_corner_lamp:
       friendly_name: "Default - Living Room Corner Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_evening','on') %}
           20
@@ -65,11 +72,23 @@
 
     default_study_ceiling_light:
       friendly_name: "Default - Study Ceiling Light"
+      icon_template: mdi:calendar
       value_template: >-
           0
 
+    default_porch_ceiling_light:
+      friendly_name: "Default - Porch Ceiling Light"
+      icon_template: mdi:calendar
+      value_template: >-
+        {% if is_state('binary_sensor.tod_evening','on') %}
+          20
+        {% else %}
+          0
+        {% endif %}
+
     default_bedroom_table_lamp:
       friendly_name: "Default - Bedroom Table Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') and is_state('person.david','home') %}
           40
@@ -79,6 +98,7 @@
 
     default_master_bedroom_table_lamp_amy:
       friendly_name: "Default - Master Bedroom Table Lamp Amy"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') and is_state('person.amy','home') %}
           25
@@ -88,11 +108,13 @@
 
     default_guest_livingroom_ceiling_light:
       friendly_name: "Default - Guest Livingroom Ceiling Light"
+      icon_template: mdi:calendar
       value_template: >-
           0
 
     default_guest_bedroom_table_lamp:
       friendly_name: "Default - Guest Bedroom Table Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') and is_state('binary_sensor.guest_mode','on') %}
           22
@@ -102,6 +124,7 @@
 
     default_guest_livingroom_floor_lamp:
       friendly_name: "Default - Guest Living Room Floor Lamp"
+      icon_template: mdi:calendar
       value_template: >-
         {% if is_state('binary_sensor.tod_overnight','on') and is_state('binary_sensor.guest_mode','on') %}
           100

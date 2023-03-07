@@ -46,6 +46,69 @@
     default: []
   mode: queued
   max: 5
+
+- alias: 'David: Activity update'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.vs988_do_not_disturb_sensor
+    to: priority_only
+    id: set_activity_to_sleep
+#  - platform: state
+#    entity_id: sensor.vs988_do_not_disturb_sensor
+#    to: off
+#    id: set_activity_to_not_sleep
+  - platform: state
+    entity_id: sensor.vs988_detected_activity
+    to: walking
+    id: set_activity_to_walking
+  - platform: state
+    entity_id: sensor.vs988_detected_activity
+    to: still
+    id: set_activity_to_still
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: set_activity_to_sleep
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.david_activity
+        data:
+          option: Sleeping
+    - conditions:
+      - condition: trigger
+        id: set_activity_to_not_sleep
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.david_activity
+        data:
+          option: Still
+    - conditions:
+      - condition: trigger
+        id: set_activity_to_walking
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.david_activity
+        data:
+          option: Walking
+    - conditions:
+      - condition: trigger
+        id: set_activity_to_still
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.david_activity
+        data:
+          option: Still
+  mode: queued
+
 - id: '1609099392133'
   alias: Monitor - Shop Door
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -73,4 +136,28 @@
   - service: switch.turn_on
     data:
       entity_id: switch.laundry_light
+  mode: single
+
+- id: Process motion detected in Porch
+  alias: Monitor - Porch motion
+  description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.porch_motion_occupancy
+    to: 'on'
+  action:
+  - service: light.turn_on
+    data:
+      entity_id: light.porch_ceiling_light
+      brightness_pct: 85
+  - service: script.tts_house
+    data:
+      tts_target: 1
+      tts_speaker: media_player.dining_room
+      tts_message: Someone is on the front porch!
+  - service: script.tts_studio
+    data:
+      tts_target: 1
+      tts_speaker: media_player.office
+      tts_message: Someone is on the front porch at the House!
   mode: single

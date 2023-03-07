@@ -14,6 +14,10 @@
     value_template: '{{ states(''binary_sensor.default_laundry_light'') != states(''switch.laundry_light'')
       }}'
     id: Laundry
+  - platform: template
+    value_template: '{{ states(''binary_sensor.default_porch_ceiling_light'') != states(''sensor.brightness_porch_ceiling_light'')
+      }}'
+    id: Porch
   condition: []
   action:
   - delay:
@@ -58,5 +62,17 @@
           name: '[damyBot] Light and Switch timer'
           domain: logbook
           message: Laundry light returned to default brightness
+    - conditions:
+      - condition: trigger
+        id: Porch
+      sequence:
+      - service: script.set_light_to_default
+        data:
+          mysensor: sensor.default_porch_ceiling_light
+      - service: logbook.log
+        data:
+          name: '[damyBot] Light and Switch timer'
+          domain: logbook
+          message: Porch Ceiling light returned to default brightness
   mode: parallel
   max: 5

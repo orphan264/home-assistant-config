@@ -4,7 +4,8 @@ homeassistant:
   longitude: !secret home_longitude
   elevation: !secret home_elevation
   unit_system: Imperial
-  time_zone: America/New_York 
+  time_zone: America/New_York
+  country: US 
   allowlist_external_dirs:
     - /config
     - /config/www/sounds
@@ -58,15 +59,11 @@ person:
     device_trackers:
       - device_tracker.life360_david
       - device_tracker.vs988
-  - name: Ken
-    id: kh123
-    device_trackers:
-      - device_tracker.life360_ken_howard
 
 notify:
-  - name: pb_notify
-    platform: pushbullet
-    api_key: !secret pushbullet_api_key
+#  - name: pb_notify
+#    platform: pushbullet
+#    api_key: !secret pushbullet_api_key
 
   - name: "david_work"
     platform: smtp
@@ -140,12 +137,6 @@ proximity:
     zone: home
     devices:
       - device_tracker.life360_amy
-    tolerance: 50
-    unit_of_measurement: mi
-  ken_home:
-    zone: howard
-    devices:
-      - device_tracker.life360_ken_howard
     tolerance: 50
     unit_of_measurement: mi
 
