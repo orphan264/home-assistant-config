@@ -6,7 +6,6 @@
     entity_id:
     - person.amy
     - person.david
-    - person.ken
   condition:
   - condition: template
     value_template: "{{ trigger.from_state is not none and\n   trigger.to_state is\
