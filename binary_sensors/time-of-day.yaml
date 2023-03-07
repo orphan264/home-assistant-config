@@ -7,7 +7,7 @@
   name: "TOD Evening"
   after: sunset
   after_offset:  "-00:30:00"
-  before: "22:30"
+  before: "22:20"
 
 - platform: tod
   name: "The Hour of the Wolf"
