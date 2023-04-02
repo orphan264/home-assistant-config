@@ -10,10 +10,25 @@
     after: 07:30:00
     before: '19:15:00'
   action:
-    - service: script.tts_house
+    - service: script.sonos_broadcast
       data:
-        tts_chimes: 1
-    - service: script.tts_studio
+        v_speakers:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.dining_room
+        v_speaker_master:
+          - media_player.dining_room
+        v_volume_level: 0.26
+        v_media_details:
+          - v_media_to_play: media-source://media_source/local/GrandFatherChime{{now().strftime("%I")}}.wav
+    - service: script.sonos_broadcast
       data:
-        tts_chimes: 1
+        v_speakers:
+          - media_player.office
+          - media_player.painting_room
+        v_speaker_master:
+          - media_player.office
+        v_volume_level: 0.26
+        v_media_details:
+          - v_media_to_play: media-source://media_source/local/GrandFatherChime{{now().strftime("%I")}}.wav
   mode: single

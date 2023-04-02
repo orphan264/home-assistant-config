@@ -18,8 +18,27 @@
       value_template: '{{ state_attr(''climate.house_thermostat'',''system_mode'') == ''[0]/off''  }}'
   condition: []
   action:
-  - service: script.tts_house
-    data_template:
-      tts_broadcast: 1
-      tts_message: "WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off"
+  - service: script.sonos_broadcast
+    data:
+      v_speakers:
+        - media_player.bedroom
+        - media_player.dining_room
+        - media_player.study
+      v_speaker_master:
+        - media_player.dining_room
+      v_volume_level: 0.36
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
+        - v_media_to_play: WARNING! The thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The thermostat has been turned off
+  - service: script.sonos_broadcast
+    data:
+      v_speakers:
+        - media_player.office
+        - media_player.painting_room
+      v_speaker_master:
+        - media_player.office
+      v_volume_level: 0.36
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
+        - v_media_to_play: WARNING! The house thermostat has been turned off. The furnace will not be activated unless the thermostat has been turned back on. Warning! The house thermostat has been turned off
   mode: single

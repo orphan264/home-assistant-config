@@ -6,20 +6,85 @@
     event: sunset
     offset: -00:30:15
   action:
-  - service: script.tts_house
-    data_template:
-      tts_broadcast: 1
-      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
-        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
-        I will take care of the lights!", "Activating evening lights! Don''t stay
-        up too late!", "That''s OK, You relax, I will take care of the lights." ]
-        |random }}'
-  - service: script.tts_studio
-    data_template:
-      tts_broadcast: 1
-      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
-        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
-        I will take care of the lights!", "Activating evening lights! Don''t stay
-        up too late!", "That''s OK, You relax, I will take care of the lights." ]
-        |random }}'
+  - service: script.sonos_broadcast
+    data:
+      v_speakers:
+        - media_player.bedroom
+        - media_player.dining_room
+        - media_player.study
+      v_speaker_master:
+        - media_player.dining_room
+      v_volume_level: 0.36
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
+        - v_media_to_play: '{{ [ 
+        "Pardon me",
+        "Excuse me",
+        "I do not mean to interrupt",
+        "I hate to interrupt ",
+        "I beg your pardon",
+        "I do not mean to intrude",
+        "I''m sorry to interrupt ",
+        "Just a quick heads up",
+        "Please forgive the intrusion"
+         ] |random }}'
+        - v_media_to_play: '{{ [ 
+        "It is time to prepare the house for sunset.",
+        "The sun will be setting in approximately 30 minutes.",
+        "I will take care of the lights.",
+        "I am activating evening lights"
+         ] |random }}'
+        - v_media_to_play: '{{ [ 
+        "Have a pleasant evening!",
+        "Enjoy your evening!",
+        "Don''t stay up too late!"
+         ] |random }}'
+  - service: script.sonos_broadcast
+    data:
+      v_speakers:
+        - media_player.office
+        - media_player.painting_room
+      v_speaker_master:
+        - media_player.office
+      v_volume_level: 0.36
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
+        - v_media_to_play: '{{ [ 
+        "Pardon me",
+        "Excuse me",
+        "I do not mean to interrupt",
+        "I hate to interrupt ",
+        "I beg your pardon",
+        "I do not mean to intrude",
+        "I''m sorry to interrupt ",
+        "Just a quick heads up",
+        "Please forgive the intrusion"
+         ] |random }}'
+        - v_media_to_play: '{{ [ 
+        "It is time to prepare the house for sunset.",
+        "The sun will be setting in approximately 30 minutes.",
+        "I will take care of the lights.",
+        "I am activating evening lights"
+         ] |random }}'
+        - v_media_to_play: '{{ [ 
+        "Have a pleasant evening!",
+        "Enjoy your evening!",
+        "Don''t stay up too late!"
+         ] |random }}'
+#  - service: script.tts_house
+#    data_template:
+#      tts_broadcast: 1
+#      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+#        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
+#        I will take care of the lights!", "Activating evening lights! Don''t stay
+#        up too late!", "That''s OK, You relax, I will take care of the lights." ]
+#        |random }}'
+#  - service: script.tts_studio
+#    data_template:
+#      tts_broadcast: 1
+#      tts_message: '{{ [ "Preparing for sunset. Have a pleasant evening!",  "The sun will
+#        be setting shortly. Enjoy your evening!", "Here comes the night. Don''t worry!
+#        I will take care of the lights!", "Activating evening lights! Don''t stay
+#        up too late!", "That''s OK, You relax, I will take care of the lights." ]
+#        |random }}'
   mode: single
