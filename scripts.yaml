@@ -327,6 +327,4 @@ tts_tts:
           - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
           - v_media_to_play: The temperature is currently {{ state_attr('weather.home', 'temperature') }} degrees.
           - v_media_to_play: media-source://media_source/local/GrandFatherChime{{now().strftime("%I")}}.wav
-#          - v_media_to_play: >-
-#              and Amy is still wonderful!
   mode: single
