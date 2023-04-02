@@ -307,6 +307,54 @@ tts_studio:
           - media_player.painting_room
           with_group: true
       - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_bell == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: media_player.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: media_player.join
+        data:
+          group_members: media_player.painting_room
+        target: 
+          entity_id:
+          - media_player.office
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.office
+          volume_level: 0.26
+      - service: media_player.play_media
+        data_template:
+          entity_id:
+          - media_player.office
+          media_content_id: 'http://10.10.10.141:8123/local/sounds/bell.wav'
+          media_content_type: music
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.office'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: media_player.unjoin
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.office
+          - media_player.painting_room
+          with_group: true
+      - delay: 00:00:02
     default:
     - service: sonos.snapshot
       data:
@@ -462,6 +510,7 @@ status_annc:
         \ == 1 %}\n    {{ interruption() }}\n  {% endif %}\n\n  {% if call_weather\
         \ == 1 %}\n    {{ weather() }}\n  {% endif %}\n\n  {{ speech_message }}\n\n\
         {%- endmacro -%} {{- mother_of_all_macros() -}}"
+
 tts_house:
   alias: TTS House Controller
   mode: queued
@@ -480,12 +529,12 @@ tts_house:
           - media_player.bedroom
           - media_player.study
           - media_player.dining_room
-      - service: media_player.media_pause
-        data:
-          entity_id:
-          - media_player.bedroom
-          - media_player.study
-          - media_player.dining_room
+#      - service: media_player.media_pause
+#        data:
+#          entity_id:
+#          - media_player.bedroom
+#          - media_player.study
+#          - media_player.dining_room
       - service: media_player.unjoin
         data:
           entity_id:
@@ -623,6 +672,60 @@ tts_house:
           - media_player.study
           with_group: true
       - delay: 00:00:02
+    - conditions:
+      - condition: template
+        value_template: '{{ tts_bell == 1 }}'
+      sequence:
+      - service: sonos.snapshot
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.dining_room
+      - service: media_player.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.study
+          - media_player.dining_room
+      - service: media_player.join
+        data:
+          group_members: 
+          - media_player.bedroom
+          - media_player.study
+        target: 
+          entity_id:
+          - media_player.dining_room
+      - service: media_player.volume_set
+        data:
+          entity_id:
+          - media_player.dining_room
+          volume_level: 0.30
+      - service: media_player.play_media
+        data_template:
+          entity_id:
+          - media_player.dining_room
+          media_content_id: 'http://10.10.10.141:8123/local/sounds/bell.wav'
+          media_content_type: music
+      - delay:
+          seconds: 1
+      - wait_template: '{{ is_state(''media_player.dining_room'', ''paused'') }}'
+      - delay:
+          seconds: 1
+      - service: media_player.unjoin
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.dining_room
+          - media_player.study
+      - service: sonos.restore
+        data:
+          entity_id:
+          - media_player.bedroom
+          - media_player.dining_room
+          - media_player.study
+          with_group: true
+      - delay: 00:00:02
     default:
     - service: sonos.snapshot
       data:
@@ -664,4 +767,54 @@ tts_house:
         - media_player.study
         with_group: true
     - delay: 00:00:02
+  max: 10
+
+tts_test_2023:
+  alias: Announce with test TTS
+  sequence:
+    - service: sonos.snapshot
+      data:
+        entity_id: "{{ v_speaker_names | join(', ') }}"
+        with_group: false
+    - service: media_player.media_pause
+      data:
+        entity_id: "{{ v_speaker_names | join(', ') }}"
+    - service: media_player.repeat_set
+      data:
+        repeat: "off"
+        entity_id: "{{ v_speaker_names | join(', ') }}"
+    - service: media_player.volume_set
+      data:
+        volume_level: "{{ v_volume_level | float }} "
+      target:
+        entity_id: "{{ v_speaker_names_for_volume | join(', ') }}"
+    - repeat:
+        for_each: "{{ v_media_details }}"
+        sequence:
+          - if:
+              - condition: template
+                value_template: "{{ ' ' in repeat.item.v_media_to_play }}"
+            then:
+              - service: tts.google_say
+                data:
+                  entity_id: "{{ v_speaker_names | join(', ') }}"
+                  message: "{{ repeat.item.v_media_to_play }}"
+                  cache: true
+            else:
+              - service: media_player.play_media
+                target:
+                  entity_id: "{{ v_speaker_names | join(', ') }}"
+                data:
+                  media_content_id: "{{ repeat.item.v_media_to_play }}"
+                  media_content_type: audio/mpeg
+                metadata: {}
+          - delay: 2
+          - delay: >-
+              {{ [((state_attr(v_speaker_names | first, 'media_duration') | int) - 1), 0] | max }}
+    - service: sonos.restore
+      data:
+        entity_id: "{{ v_speaker_names | join(', ') }}"
+        with_group: false
+  mode: queued
+  icon: mdi:speaker-message
   max: 10

@@ -54,10 +54,10 @@
     entity_id: sensor.vs988_do_not_disturb_sensor
     to: priority_only
     id: set_activity_to_sleep
-#  - platform: state
-#    entity_id: sensor.vs988_do_not_disturb_sensor
-#    to: off
-#    id: set_activity_to_not_sleep
+  - platform: state
+    entity_id: sensor.vs988_do_not_disturb_sensor
+    to: off
+    id: set_activity_to_not_sleep
   - platform: state
     entity_id: sensor.vs988_detected_activity
     to: walking
@@ -145,19 +145,39 @@
   - platform: state
     entity_id: binary_sensor.porch_motion_occupancy
     to: 'on'
+  condition: []
   action:
+  - service: script.tts_house
+    data:
+      tts_bell: 1
+  - service: script.tts_studio
+    data:
+      tts_bell: 1
+  - condition: state
+    entity_id: binary_sensor.tod_overnight
+    state: 'on'
   - service: light.turn_on
     data:
       entity_id: light.porch_ceiling_light
-      brightness_pct: 85
-  - service: script.tts_house
-    data:
-      tts_target: 1
-      tts_speaker: media_player.dining_room
-      tts_message: Someone is on the front porch!
-  - service: script.tts_studio
-    data:
-      tts_target: 1
-      tts_speaker: media_player.office
-      tts_message: Someone is on the front porch at the House!
+      brightness_pct: 80
+  mode: single
+
+- id: new tts test
+  alias: Announce with TTS test
+  description: ""
+  trigger: []
+  condition: []
+  action:
+    - service: script.tts_test_2023
+      data:
+        v_speaker_names:
+          - media_player.office
+          - media_player.painting_room
+        v_speaker_names_for_volume:
+          - media_player.painting_room
+        v_volume_level: 0.3
+        v_media_details:
+          - v_media_to_play: media-source://media_source/local/bell.wav
+          - v_media_to_play: >-
+              Someone is at the front door
   mode: single
