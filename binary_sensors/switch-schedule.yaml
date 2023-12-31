@@ -21,6 +21,11 @@
       value_template: >-
         {{ is_state('binary_sensor.tod_evening','on') }}
 
+    default_sonoff_outlet_01:
+      friendly_name: "Default - Studio Christmas Tree 2"
+      value_template: >-
+        {{ is_state('binary_sensor.tod_evening','on') }}
+
     default_holiday_lights_1:
       friendly_name: "Default - Holiday Lights 1"
       value_template: >-
@@ -29,7 +34,7 @@
     default_holiday_lights_2:
       friendly_name: "Default - Holiday Lights 2"
       value_template: >-
-        off
+        {{ is_state('binary_sensor.tod_holiday_lights','on') }}
 
     default_porch_outlet:
       friendly_name: "Default - Porch Outlet"

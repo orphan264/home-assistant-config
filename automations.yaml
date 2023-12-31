@@ -85,17 +85,26 @@
     to: 'on'
   condition: []
   action:
-  - service: script.tts_house
+  - service: script.porch_light_brighten
+  - service: script.sonos_broadcast
     data:
-      tts_bell: 1
-  - service: script.tts_studio
+      v_speakers:
+        - media_player.bedroom
+        - media_player.dining_room
+        - media_player.study
+      v_speaker_master:
+        - media_player.dining_room
+      v_volume_level: 0.30
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
+  - service: script.sonos_broadcast
     data:
-      tts_bell: 1
-  - condition: state
-    entity_id: binary_sensor.tod_overnight
-    state: 'on'
-  - service: light.turn_on
-    data:
-      entity_id: light.porch_ceiling_light
-      brightness_pct: 80
+      v_speakers:
+        - media_player.office
+        - media_player.painting_room
+      v_speaker_master:
+        - media_player.office
+      v_volume_level: 0.30
+      v_media_details:
+        - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
   mode: single

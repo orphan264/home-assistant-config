@@ -19,7 +19,6 @@ frontend:
   themes: !include_dir_merge_named themes
 config:
 #updater:
-discovery:
 history:
 #energy:
 media_source:
@@ -58,7 +57,7 @@ person:
     user_id: !secret home_assistant_user_account_id_david
     device_trackers:
       - device_tracker.life360_david
-      - device_tracker.vs988
+      - device_tracker.sm_g990u2
 
 notify:
 #  - name: pb_notify
@@ -151,7 +150,7 @@ sonoff:
 
 utility_meter:
   daily_steps:
-    source: sensor.vs988_steps_sensor
+    source: sensor.sm_g990u2_steps_sensor
     cycle: daily
 
 ### Includes ###

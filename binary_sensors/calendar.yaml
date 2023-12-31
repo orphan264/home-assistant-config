@@ -1,17 +1,17 @@
-- platform: workday
-  name: Workday_David
-  country: US
-  add_holidays: 
-    - '2022-12-22'
-    - '2022-12-23'
-    - '2022-12-26'
-    - '2023-01-02'
+#- platform: workday
+#  name: Workday_David
+#  country: US
+#  add_holidays: 
+#    - '2022-12-22'
+#    - '2022-12-23'
+#    - '2022-12-26'
+#    - '2023-01-02'
 
-- platform: workday
-  name: Workday_Amy
-  country: US
-  workdays: [mon, tue, wed, thu, fri]
-  excludes: [sat, sun, holiday]  
-  add_holidays: 
-    - '2022-12-22'
-    - '2022-12-23'
+#- platform: workday
+#  name: Workday_Amy
+#  country: US
+#  workdays: [mon, tue, wed, thu, fri]
+#  excludes: [sat, sun, holiday]  
+#  add_holidays: 
+#    - '2022-12-22'
+#    - '2022-12-23'

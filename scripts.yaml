@@ -257,7 +257,7 @@ sonos_broadcast:
   alias: Sonos TTS and sound broadcaster
   mode: queued
   icon: mdi:speaker-message
-  max: 10
+  max: 15
   sequence:
     - condition: state
       entity_id: binary_sensor.announce
@@ -291,22 +291,35 @@ sonos_broadcast:
               - condition: template
                 value_template: "{{ ' ' in repeat.item.v_media_to_play }}"
             then:
-              - service: tts.google_say
-                data:
+#              - service: tts.google_say
+#                data:
+#                  entity_id: "{{ v_speaker_master | join(', ') }}"
+#                  message: "{{ repeat.item.v_media_to_play }}"
+#                  cache: true
+
+              - service: media_player.play_media
+                target:
                   entity_id: "{{ v_speaker_master | join(', ') }}"
-                  message: "{{ repeat.item.v_media_to_play }}"
-                  cache: true
+                data:
+                  media_content_id: >
+                    media-source://tts/google_translate?message={{ repeat.item.v_media_to_play }}
+                  media_content_type: music
+                  announce: false
+#              - delay: 2
+#              - delay: >-
+#                  {{ [((state_attr(v_speaker_master | first, 'media_duration' )  | int) +1 ), 0] | max }}
             else:
               - service: media_player.play_media
                 target:
                   entity_id: "{{ v_speaker_master | join(', ') }}"
                 data:
+                  announce: false
                   media_content_id: "{{ repeat.item.v_media_to_play }}"
                   media_content_type: music
                 metadata: {}
           - delay: 2
           - delay: >-
-              {{ [((state_attr(v_speaker_master | first,'media_duration') | int) -1 ), 0] | max }}
+              {{ [((state_attr(v_speaker_master | first, 'media_duration' )  | int(default=0)) +1 ), 0] | max }}
     - service: sonos.restore
       data:
         entity_id: "{{ v_speakers | join(', ') }}"
@@ -325,6 +338,17 @@ tts_tts:
         v_volume_level: 0.25
         v_media_details:
           - v_media_to_play: media-source://media_source/local/AnnouncementChime.wav
-          - v_media_to_play: The temperature is currently {{ state_attr('weather.home', 'temperature') }} degrees.
-          - v_media_to_play: media-source://media_source/local/GrandFatherChime{{now().strftime("%I")}}.wav
+#          - v_media_to_play: The temperature is currently {{ state_attr('weather.home', 'temperature') }} degrees.
+          - v_media_to_play: This is a test.
   mode: single
+
+porch_light_brighten:
+  alias: Brighten Porch light
+  sequence:
+  - condition: state
+    entity_id: binary_sensor.tod_overnight
+    state: 'on'
+  - service: light.turn_on
+    data:
+      entity_id: light.porch_ceiling_light
+      brightness_pct: 75

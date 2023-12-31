@@ -30,12 +30,6 @@
       friendly_name: "David's Phone is Charging"
       value_template: "{{ state_attr('device_tracker.life360_david', 'battery_charging') }}"
 
-    battery_nexus:
-      friendly_name: "Nexus 7 Battery"
-      value_template: "{{ state_attr('device_tracker.nexus_7', 'battery_level') }}"
-      unit_of_measurement: '%'
-      device_class: battery
-
     battery_amy:
       friendly_name: Amy's Battery
       value_template: "{{ state_attr('device_tracker.life360_amy', 'battery_level') }}"

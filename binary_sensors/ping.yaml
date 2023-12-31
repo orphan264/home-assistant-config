@@ -1,3 +1,4 @@
+#-Migrated to UI
 #- platform: ping
 #  host: printer.damy.us
 #- platform: ping
@@ -8,8 +9,8 @@
 #  host: odin.damy.us
 #- platform: ping
 #  host: freya.damy.us
-- platform: ping
-  host: gateway.damy.us
+#- platform: ping
+#  host: gateway.damy.us
 #- platform: ping
 #  host: studio-ap.damy.us
 #- platform: ping

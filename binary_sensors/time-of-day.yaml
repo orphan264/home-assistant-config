@@ -31,7 +31,7 @@
 
 - platform: tod
   name: "TOD Amy Workday Morning"
-  after: "04:30"
+  after: "04:00"
   after_offset: "+01:00:00"
   before: sunrise
   before_offset: "+00:20:00"
@@ -64,9 +64,9 @@
 - platform: tod
   name: "TOD Heat Afternoon"
   after: '12:50'
-  before: '16:45'
+  before: '15:30'
 
 - platform: tod
   name: "TOD Heat Evening"
-  after: '16:45'
-  before: '21:45'
+  after: '15:30'
+  before: '22:00'
