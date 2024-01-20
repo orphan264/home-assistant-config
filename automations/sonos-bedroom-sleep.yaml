@@ -3,8 +3,8 @@
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
   - platform: state
-    entity_id: sensor.battery_charging_david
-    to: 'True'
+    entity_id: sensor.sm_g990u2_charger_type
+    to: 'wireless'
   condition:
   - condition: time
     after: '21:00:00'

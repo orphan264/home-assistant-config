@@ -12,33 +12,9 @@
           {{ states.binary_sensor.basement_door_contact.last_changed }}
       device_class: timestamp
 
-    plex_livingroom_playing:
-      friendly_name: 'Currently Playing on Plex - Livingroom'
-      value_template: "{{ state_attr('media_player.plex_plex_for_roku_livingroom', 'media_content_type') }}"
-
     today_is:
       friendly_name: 'Today is'
       value_template: "{{ ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][now().weekday()] }}" 
-
-    battery_david:
-      friendly_name: "David's Battery"
-      value_template: "{{ state_attr('device_tracker.life360_david', 'battery_level') }}"
-      unit_of_measurement: '%'
-      device_class: battery
-
-    battery_charging_david:
-      friendly_name: "David's Phone is Charging"
-      value_template: "{{ state_attr('device_tracker.life360_david', 'battery_charging') }}"
-
-    battery_amy:
-      friendly_name: Amy's Battery
-      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery_level') }}"
-      unit_of_measurement: '%'
-      device_class: battery
-
-    battery_charging_amy:
-      friendly_name: "Amy's Phone is Charging"
-      value_template: "{{ state_attr('device_tracker.life360_amy', 'battery_charging') }}"
 
 
     sonos_office_volume:

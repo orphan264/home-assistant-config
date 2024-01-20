@@ -9,7 +9,7 @@ homeassistant:
   allowlist_external_dirs:
     - /config
     - /config/www/sounds
-  customize: !include customize.yaml
+#  customize: !include customize.yaml
   auth_providers:
     - type: trusted_networks
       trusted_networks: !secret ip_trusted_network
@@ -50,20 +50,16 @@ person:
   - name: Amy
     id: alk123
     device_trackers:
-      - device_tracker.life360_amy
+      - device_tracker.nmap_tracker_84_b1_e4_59_d7_cd
       - device_tracker.hostname1
   - name: David
     id: djk123
     user_id: !secret home_assistant_user_account_id_david
     device_trackers:
-      - device_tracker.life360_david
       - device_tracker.sm_g990u2
+      - device_tracker.nmap_tracker_96_c5_21_64_8d_b1
 
 notify:
-#  - name: pb_notify
-#    platform: pushbullet
-#    api_key: !secret pushbullet_api_key
-
   - name: "david_work"
     platform: smtp
     server: !secret ip_modi
@@ -121,23 +117,19 @@ mqtt:
       value_template: "{{ value | float }}"
       unit_of_measurement: 'Mbps'
 
-#google:
-#  client_id: !secret google_client_id
-#  client_secret: !secret google_client_secret
-
 proximity:
   david_home:
     zone: home
     devices:
-      - device_tracker.life360_david
+      - device_tracker.sm_g990u2
     tolerance: 50
     unit_of_measurement: mi
-  amy_home:
-    zone: home
-    devices:
-      - device_tracker.life360_amy
-    tolerance: 50
-    unit_of_measurement: mi
+#  amy_home:
+#    zone: home
+#    devices:
+#      - device_tracker.life360_amy
+#    tolerance: 50
+#    unit_of_measurement: mi
 
 sonoff:
   username: !secret ewe_username

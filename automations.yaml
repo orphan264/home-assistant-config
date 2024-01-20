@@ -20,9 +20,9 @@
   alias: Someone has come home
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
   trigger:
-  - platform: state
-    entity_id: person.amy
-    to: home
+#  - platform: state
+#    entity_id: person.amy
+#    to: home
   - platform: state
     entity_id: person.david
     to: home
@@ -46,7 +46,6 @@
     default: []
   mode: queued
   max: 5
-
 - id: '1609099392133'
   alias: Monitor - Shop Door
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -75,7 +74,6 @@
     data:
       entity_id: switch.laundry_light
   mode: single
-
 - id: Process motion detected in Porch
   alias: Monitor - Porch motion
   description: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
@@ -89,22 +87,40 @@
   - service: script.sonos_broadcast
     data:
       v_speakers:
-        - media_player.bedroom
-        - media_player.dining_room
-        - media_player.study
+      - media_player.bedroom
+      - media_player.dining_room
+      - media_player.study
       v_speaker_master:
-        - media_player.dining_room
-      v_volume_level: 0.30
+      - media_player.dining_room
+      v_volume_level: 0.3
       v_media_details:
-        - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
+      - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
   - service: script.sonos_broadcast
     data:
       v_speakers:
-        - media_player.office
-        - media_player.painting_room
+      - media_player.office
+      - media_player.painting_room
       v_speaker_master:
-        - media_player.office
-      v_volume_level: 0.30
+      - media_player.office
+      v_volume_level: 0.3
       v_media_details:
-        - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
+      - v_media_to_play: media-source://media_source/local/HousePorchBell.wav
   mode: single
+- id: '1704753265568'
+  alias: Awtrix current playing song
+  description: Display Current song
+  use_blueprint:
+    path: GKXydoDmOpjL.yaml
+    input:
+      awtrix_light: 7356b4242d2c91414eb6ec9d80e6caf9
+      media_player: media_player.office
+      icon_in: '9266'
+      repeat_text: '1'
+      push_icon: '2'
+      show_rainbow: false
+      text_case: '2'
+      display_type: '1'
+      text_color:
+      - 0
+      - 128
+      - 255

@@ -24,10 +24,9 @@
     - service: script.sonos_broadcast
       data:
         v_speakers:
-          - media_player.office
           - media_player.painting_room
         v_speaker_master:
-          - media_player.office
+          - media_player.painting_room
         v_volume_level: 0.26
         v_media_details:
           - v_media_to_play: media-source://media_source/local/GrandFatherChime{{now().strftime("%I")}}.wav

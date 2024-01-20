@@ -5,31 +5,31 @@
   - platform: numeric_state
     entity_id:
     - proximity.david_home
-    - proximity.amy_home
+#    - proximity.amy_home
     below: '5'
     id: 5 miles
   - platform: numeric_state
     entity_id:
     - proximity.david_home
-    - proximity.amy_home
+#    - proximity.amy_home
     below: '30'
     id: 30 miles
   - platform: numeric_state
     entity_id:
     - proximity.david_home
-    - proximity.amy_home
+#    - proximity.amy_home
     below: '60'
     id: 60 miles
   - platform: numeric_state
     entity_id:
     - proximity.david_home
-    - proximity.amy_home
+#    - proximity.amy_home
     below: '100'
     id: 100 miles
   - platform: numeric_state
     entity_id:
     - proximity.david_home
-    - proximity.amy_home
+#    - proximity.amy_home
     below: '200'
     id: 200 miles
   condition:

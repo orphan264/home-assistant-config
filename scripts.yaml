@@ -199,20 +199,20 @@ set_heat_to_schedule:
 #      message: 'The House thermostat has been set to {{ states(mysensor) }} degrees'
 #      title: 'House thermostat changed'
 
-test_pushbullet:
-  alias: Test pushbullet notification
-  sequence:
-  - service: notify.pb_notify
-    data:
-      title: Internet Speed
-      message: "According to my latest speed tests I am getting {{ states('sensor.spectrumdown')\
-        \ }} Mbps down  and {{ states('sensor.spectrumup') }} Mbps up.  {{ [ 'I suppose\
-        \ that is the best I can get in nowhere, Maine!',\n    'I will never be able\
-        \ to rule the world with that speed!',\n    'Bots in more civilized places\
-        \ are getting better speeds!',\n    'Fast or slow, thank you Spectrum.'\n\
-        \    ] | random }}"
-      target:
-      - channel/damyBot
+#test_pushbullet:
+#  alias: Test pushbullet notification
+#  sequence:
+#  - service: notify.pb_notify
+#    data:
+#      title: Internet Speed
+#      message: "According to my latest speed tests I am getting {{ states('sensor.spectrumdown')\
+#        \ }} Mbps down  and {{ states('sensor.spectrumup') }} Mbps up.  {{ [ 'I suppose\
+#        \ that is the best I can get in nowhere, Maine!',\n    'I will never be able\
+#        \ to rule the world with that speed!',\n    'Bots in more civilized places\
+#        \ are getting better speeds!',\n    'Fast or slow, thank you Spectrum.'\n\
+#        \    ] | random }}"
+#      target:
+#      - channel/damyBot
 test_smtp:
   alias: Test david_work notification
   sequence:
